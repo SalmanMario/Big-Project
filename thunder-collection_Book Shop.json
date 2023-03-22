@@ -1,0 +1,289 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "Book Shop",
+    "dateExported": "2023-03-16T11:38:50.963Z",
+    "version": "1.1",
+    "folders": [
+        {
+            "_id": "caddf1d3-3827-414b-8f6a-5908131e7c0e",
+            "name": "Book",
+            "containerId": "",
+            "created": "2022-11-02T19:22:57.976Z",
+            "sortNum": 10000
+        },
+        {
+            "_id": "80294ce1-fa26-4183-ba02-214e862eaeee",
+            "name": "Auth",
+            "containerId": "",
+            "created": "2022-11-02T19:23:06.217Z",
+            "sortNum": 20000
+        },
+        {
+            "_id": "b7e03956-ec21-46f0-8539-bfe6640e561a",
+            "name": "File",
+            "containerId": "",
+            "created": "2022-11-04T16:21:04.253Z",
+            "sortNum": 30000
+        }
+    ],
+    "requests": [
+        {
+            "_id": "8d5f758b-0170-4c24-850e-76bff90ae827",
+            "colId": "52355d4d-0149-4fd1-b10d-31084f05ebbc",
+            "containerId": "caddf1d3-3827-414b-8f6a-5908131e7c0e",
+            "name": "Get all books",
+            "url": "/book/",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2022-11-02T19:15:22.603Z",
+            "modified": "2023-03-16T11:37:04.217Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "5b17dbfe-4cc6-442f-9a92-8ca8f54a1390",
+            "colId": "52355d4d-0149-4fd1-b10d-31084f05ebbc",
+            "containerId": "80294ce1-fa26-4183-ba02-214e862eaeee",
+            "name": "Login",
+            "url": "http://localhost:4000/auth/login",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2022-11-02T19:23:10.417Z",
+            "modified": "2023-03-08T18:32:04.242Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"email\": \"alex@test.com\",\n  \"password\":\"1234\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "3791bbe0-f5e0-4a79-a1a7-cd3ec1b9a9a3",
+            "colId": "52355d4d-0149-4fd1-b10d-31084f05ebbc",
+            "containerId": "caddf1d3-3827-414b-8f6a-5908131e7c0e",
+            "name": "Update Book",
+            "url": "/book/6412ff8702e14bf9338ca63c",
+            "method": "PUT",
+            "sortNum": 30000,
+            "created": "2022-11-02T19:28:01.052Z",
+            "modified": "2023-03-16T11:38:01.516Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "formdata",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "description",
+                        "value": "Metoda cea mai buna sa-l opresti pe prizonier sa fuga, este sa te asiguri ca nu va stii niciodata ca este prizonier."
+                    },
+                    {
+                        "name": "title",
+                        "value": "The Brothers Karamazov"
+                    },
+                    {
+                        "name": "author",
+                        "value": "Fyodor Dostoevsky 2"
+                    }
+                ],
+                "files": [
+                    {
+                        "name": "file",
+                        "value": "c:\\Users\\alex_\\Downloads\\fratii-karamazov-doua-volume-cover_big.jpg"
+                    }
+                ]
+            },
+            "tests": []
+        },
+        {
+            "_id": "74043e54-0957-4470-8154-4600562b03e8",
+            "colId": "52355d4d-0149-4fd1-b10d-31084f05ebbc",
+            "containerId": "caddf1d3-3827-414b-8f6a-5908131e7c0e",
+            "name": "Create Book",
+            "url": "/book",
+            "method": "POST",
+            "sortNum": 40000,
+            "created": "2022-11-02T19:56:26.810Z",
+            "modified": "2023-03-16T11:37:42.829Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "formdata",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "description",
+                        "value": "In the end they will lay their freedom at our feet and say to us, Make us your slaves, but feed us."
+                    },
+                    {
+                        "name": "title",
+                        "value": "The Brothers Karamazov"
+                    },
+                    {
+                        "name": "author",
+                        "value": "Fyodor Dostoevsky"
+                    }
+                ],
+                "files": [
+                    {
+                        "name": "file",
+                        "value": "c:\\Users\\alex_\\Downloads\\9780140449242-jacket-large.jpg"
+                    }
+                ]
+            },
+            "tests": []
+        },
+        {
+            "_id": "6120bbd2-99dd-434c-b4fa-ab64b5b4f8ed",
+            "colId": "52355d4d-0149-4fd1-b10d-31084f05ebbc",
+            "containerId": "caddf1d3-3827-414b-8f6a-5908131e7c0e",
+            "name": "Delete Book",
+            "url": "/book/6412ff8702e14bf9338ca63c",
+            "method": "DELETE",
+            "sortNum": 50000,
+            "created": "2022-11-02T19:56:31.976Z",
+            "modified": "2023-03-16T11:38:05.320Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "b74f5387-f01b-4357-87ad-3ae19e79ae88",
+            "colId": "52355d4d-0149-4fd1-b10d-31084f05ebbc",
+            "containerId": "caddf1d3-3827-414b-8f6a-5908131e7c0e",
+            "name": "Get Book By ID",
+            "url": "http://localhost:4000/book/640acfe59bc1d2e7e03d01a5",
+            "method": "GET",
+            "sortNum": 60000,
+            "created": "2022-11-02T19:56:37.538Z",
+            "modified": "2023-03-10T07:33:59.651Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "0710e931-ef58-42cc-8446-00b7bab2001b",
+            "colId": "52355d4d-0149-4fd1-b10d-31084f05ebbc",
+            "containerId": "caddf1d3-3827-414b-8f6a-5908131e7c0e",
+            "name": "Search",
+            "url": "/book/search?search=Karamazov",
+            "method": "GET",
+            "sortNum": 70000,
+            "created": "2022-11-02T20:35:18.310Z",
+            "modified": "2023-03-16T11:38:18.039Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "limit",
+                    "value": "10",
+                    "isDisabled": true,
+                    "isPath": false
+                },
+                {
+                    "name": "search",
+                    "value": "Karamazov",
+                    "isPath": false
+                },
+                {
+                    "name": "offset",
+                    "value": "10",
+                    "isDisabled": true,
+                    "isPath": false
+                }
+            ],
+            "tests": []
+        },
+        {
+            "_id": "fd6b6dd4-9b89-4e1d-86cf-db4e84ae1773",
+            "colId": "52355d4d-0149-4fd1-b10d-31084f05ebbc",
+            "containerId": "b7e03956-ec21-46f0-8539-bfe6640e561a",
+            "name": "Add Picture",
+            "url": "http://localhost:4000/file/",
+            "method": "PUT",
+            "sortNum": 80000,
+            "created": "2022-11-04T16:21:10.345Z",
+            "modified": "2022-11-04T16:23:00.231Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "formdata",
+                "raw": "",
+                "form": [],
+                "files": [
+                    {
+                        "name": "file",
+                        "value": "c:\\Users\\alex_\\Downloads\\seat\\artworks-4K31Tt2ADLZgf2wx-7o86hg-t500x500.jpg"
+                    }
+                ]
+            },
+            "tests": []
+        },
+        {
+            "_id": "f2e1b842-c6b2-4995-b0e7-28312c09b432",
+            "colId": "52355d4d-0149-4fd1-b10d-31084f05ebbc",
+            "containerId": "caddf1d3-3827-414b-8f6a-5908131e7c0e",
+            "name": "Get my books",
+            "url": "/book/my-books",
+            "method": "GET",
+            "sortNum": 90000,
+            "created": "2023-03-10T07:38:47.235Z",
+            "modified": "2023-03-16T11:38:25.360Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "2b0668c0-4ddf-4f54-83b5-e587c0e25c06",
+            "colId": "52355d4d-0149-4fd1-b10d-31084f05ebbc",
+            "containerId": "caddf1d3-3827-414b-8f6a-5908131e7c0e",
+            "name": "Get Books by User Id",
+            "url": "/book/user/635bed56f74916b9d7587958",
+            "method": "GET",
+            "sortNum": 100000,
+            "created": "2023-03-10T07:55:34.981Z",
+            "modified": "2023-03-16T11:38:37.173Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "63cc43d6-25a3-451d-bb35-bb1695aa1e05",
+            "colId": "52355d4d-0149-4fd1-b10d-31084f05ebbc",
+            "containerId": "80294ce1-fa26-4183-ba02-214e862eaeee",
+            "name": "Register",
+            "url": "http://localhost:4000/auth/register",
+            "method": "POST",
+            "sortNum": 110000,
+            "created": "2023-03-11T11:53:27.640Z",
+            "modified": "2023-03-11T11:59:33.902Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"email\": \"alex.profir@itschool.com\",\n  \"firstName\":\"Alex\",\n  \"lastName\":\"Profir\",\n  \"password\":\"12345678\"\n}",
+                "form": []
+            },
+            "tests": []
+        }
+    ],
+    "settings": {
+        "headers": [
+            {
+                "name": "Authorization",
+                "value": "Bearer {{AUTH_TOKEN}}",
+                "isDisabled": true
+            }
+        ],
+        "auth": {
+            "type": "bearer",
+            "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MzViZWQ1NmY3NDkxNmI5ZDc1ODc5NTgiLCJpYXQiOjE2NzgzMDQwNzY5NTUsInR5cGUiOiJhY2Nlc3MifQ.T7uXUlV-51QQMZMWqHLNI4fTiBd1mdZjX9SdRQlLVOQ"
+        },
+        "tests": [],
+        "options": {
+            "baseUrl": "https://itschool-library.onrender.com"
+        }
+    }
+}
