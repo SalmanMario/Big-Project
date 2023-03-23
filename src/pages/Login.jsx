@@ -27,6 +27,10 @@ export function Login() {
   const goToRegister = () => {
     navigate("/register");
   };
+
+  const goToMainPage = () => {
+    navigate("/mainpage");
+  };
   return (
     <ThemeProvider theme={theme}>
       <Stack
@@ -36,6 +40,9 @@ export function Login() {
         alignItems="center"
         flexDirection="column"
       >
+        <Button onClick={goToMainPage} variant="contained">
+          MAIN PAGE BUTTON
+        </Button>
         <Typography sx={{ fontFamily: "Montserrat", fontWeight: 700, color: green["A400"] }} variant="h3">
           Login
         </Typography>
