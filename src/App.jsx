@@ -2,7 +2,7 @@ import { Route, Router, Routes } from "react-router-dom";
 import { Login } from "./pages/Login";
 import { Register } from "./pages/Register";
 import { MainPage } from "./pages/MainPage";
-import { AppLayout } from "./layouts/AppLayout";
+import { Book } from "./components/Book";
 
 function App() {
   return (
@@ -10,6 +10,7 @@ function App() {
       <Route path="/" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/mainpage" element={<MainPage />} />
+      <Route path="/book/:_id" element={<Book />} />
     </Routes>
   );
 }

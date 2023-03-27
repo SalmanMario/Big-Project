@@ -40,6 +40,10 @@ export function Navbar() {
     navigate("/");
   };
 
+  const mainPage = () => {
+    navigate("/mainpage");
+  };
+
   const CreateBook = () => {
     navigate("/register");
   };
@@ -95,6 +99,9 @@ export function Navbar() {
                 display: { xs: "block", md: "none" },
               }}
             >
+              <MenuItem onClick={mainPage}>
+                <Typography textAlign="center">Home</Typography>
+              </MenuItem>
               <MenuItem onClick={CreateBook}>
                 <Typography textAlign="center">Create Book</Typography>
               </MenuItem>
@@ -117,6 +124,9 @@ export function Navbar() {
               textDecoration: "none",
             }}
           ></Typography>
+          <Button onClick={mainPage} sx={{ my: 2, color: "white", display: "block" }}>
+            HOME
+          </Button>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             <Button onClick={CreateBook} sx={{ my: 2, color: "white", display: "block" }}>
               CREATE BOOK

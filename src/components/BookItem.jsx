@@ -1,7 +1,7 @@
 import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
 
-export function BookItem({ author, title, description, coverImageURL, id }) {
+export function BookItem({ author, title, description, coverImageURL }) {
   return (
     <Box>
       <Typography variant="h6">{author}</Typography>

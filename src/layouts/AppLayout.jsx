@@ -3,9 +3,9 @@ import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/Footer";
 export function AppLayout({ children }) {
   return (
-    <Box>
+    <Box sx={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
       <Navbar />
-      {children}
+      <Box sx={{ flex: 1, display: "flex", flexDirection: "column" }}>{children}</Box>
       <Footer />
     </Box>
   );
