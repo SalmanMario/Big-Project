@@ -32,6 +32,17 @@ export function BookComponent({ book }) {
         fontFamily: "Montserrat",
         fontWeight: 700,
       },
+      h4: {
+        fontFamily: "Montserrat",
+        fontWeight: 700,
+      },
+      h5: {
+        fontFamily: "Montserrat",
+        fontWeight: 500,
+      },
+      body1: {
+        fontFamily: "Inter",
+      },
     },
   });
 
@@ -47,13 +58,13 @@ export function BookComponent({ book }) {
     <ThemeProvider theme={theme}>
       <Grid sx={{ mb: 2 }} item lg={3} md={4} sm={6} xs={12}>
         <Box display="flex" justifyContent="center">
-          <Card sx={{ maxWidth: 240 }}>
-            <CardMedia sx={{ height: 360 }} image={book.coverImageURL} title="book" />
+          <Card sx={{ maxWidth: 320 }}>
+            <CardMedia sx={{ height: 440 }} image={book.coverImageURL} title="book" />
             <CardContent>
               <Typography textAlign="center" gutterBottom variant="h4">
                 {book.title}
               </Typography>
-              <Typography textAlign="center" gutterBottom variant="h6">
+              <Typography textAlign="center" gutterBottom variant="h5">
                 {book.author}
               </Typography>
               <Typography variant="body1">
