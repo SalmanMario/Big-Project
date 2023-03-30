@@ -14,6 +14,8 @@ import MenuItem from "@mui/material/MenuItem";
 import LocalLibraryIcon from "@mui/icons-material/LocalLibrary";
 import { green } from "@mui/material/colors";
 import { useNavigate } from "react-router-dom";
+import { headers } from "../services/utils";
+import { useState } from "react";
 
 export function Navbar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -37,6 +39,8 @@ export function Navbar() {
   // Trebuie adaugata functionalitatea de logout
   const navigate = useNavigate();
   const Logout = () => {
+    localStorage.removeItem("token");
+    delete headers["Authorization"];
     navigate("/");
   };
 
@@ -136,7 +140,7 @@ export function Navbar() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="User">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar />
+                <Avatar variant="dot" />
               </IconButton>
             </Tooltip>
             <Menu

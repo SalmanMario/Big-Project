@@ -1,7 +1,7 @@
 {
     "client": "Thunder Client",
     "collectionName": "Book Shop",
-    "dateExported": "2023-03-16T11:38:50.963Z",
+    "dateExported": "2023-03-28T08:55:18.149Z",
     "version": "1.1",
     "folders": [
         {
@@ -46,11 +46,11 @@
             "colId": "52355d4d-0149-4fd1-b10d-31084f05ebbc",
             "containerId": "80294ce1-fa26-4183-ba02-214e862eaeee",
             "name": "Login",
-            "url": "http://localhost:4000/auth/login",
+            "url": "/auth/login",
             "method": "POST",
             "sortNum": 20000,
             "created": "2022-11-02T19:23:10.417Z",
-            "modified": "2023-03-08T18:32:04.242Z",
+            "modified": "2023-03-22T12:03:39.258Z",
             "headers": [],
             "params": [],
             "body": {
@@ -65,11 +65,11 @@
             "colId": "52355d4d-0149-4fd1-b10d-31084f05ebbc",
             "containerId": "caddf1d3-3827-414b-8f6a-5908131e7c0e",
             "name": "Update Book",
-            "url": "/book/6412ff8702e14bf9338ca63c",
+            "url": "/book/641424bc86d44b2885f7fc30",
             "method": "PUT",
             "sortNum": 30000,
             "created": "2022-11-02T19:28:01.052Z",
-            "modified": "2023-03-16T11:38:01.516Z",
+            "modified": "2023-03-17T08:30:47.387Z",
             "headers": [],
             "params": [],
             "body": {
@@ -107,7 +107,7 @@
             "method": "POST",
             "sortNum": 40000,
             "created": "2022-11-02T19:56:26.810Z",
-            "modified": "2023-03-16T11:37:42.829Z",
+            "modified": "2023-03-17T08:17:48.718Z",
             "headers": [],
             "params": [],
             "body": {
@@ -130,7 +130,7 @@
                 "files": [
                     {
                         "name": "file",
-                        "value": "c:\\Users\\alex_\\Downloads\\9780140449242-jacket-large.jpg"
+                        "value": "c:\\Users\\alex_\\Downloads\\wallpapersden.com_coastline-4k-hawaii_1644x3840.jpg"
                     }
                 ]
             },
@@ -141,11 +141,11 @@
             "colId": "52355d4d-0149-4fd1-b10d-31084f05ebbc",
             "containerId": "caddf1d3-3827-414b-8f6a-5908131e7c0e",
             "name": "Delete Book",
-            "url": "/book/6412ff8702e14bf9338ca63c",
+            "url": "/book/641a01b5e5e17fb9446b71bb",
             "method": "DELETE",
             "sortNum": 50000,
             "created": "2022-11-02T19:56:31.976Z",
-            "modified": "2023-03-16T11:38:05.320Z",
+            "modified": "2023-03-21T19:12:59.693Z",
             "headers": [],
             "params": [],
             "tests": []
@@ -155,11 +155,11 @@
             "colId": "52355d4d-0149-4fd1-b10d-31084f05ebbc",
             "containerId": "caddf1d3-3827-414b-8f6a-5908131e7c0e",
             "name": "Get Book By ID",
-            "url": "http://localhost:4000/book/640acfe59bc1d2e7e03d01a5",
+            "url": "/book/640acfe59bc1d2e7e03d01a5",
             "method": "GET",
             "sortNum": 60000,
             "created": "2022-11-02T19:56:37.538Z",
-            "modified": "2023-03-10T07:33:59.651Z",
+            "modified": "2023-03-22T12:01:29.670Z",
             "headers": [],
             "params": [],
             "tests": []
@@ -201,24 +201,13 @@
             "colId": "52355d4d-0149-4fd1-b10d-31084f05ebbc",
             "containerId": "b7e03956-ec21-46f0-8539-bfe6640e561a",
             "name": "Add Picture",
-            "url": "http://localhost:4000/file/",
+            "url": "/file/",
             "method": "PUT",
             "sortNum": 80000,
             "created": "2022-11-04T16:21:10.345Z",
-            "modified": "2022-11-04T16:23:00.231Z",
+            "modified": "2023-03-28T08:54:33.315Z",
             "headers": [],
             "params": [],
-            "body": {
-                "type": "formdata",
-                "raw": "",
-                "form": [],
-                "files": [
-                    {
-                        "name": "file",
-                        "value": "c:\\Users\\alex_\\Downloads\\seat\\artworks-4K31Tt2ADLZgf2wx-7o86hg-t500x500.jpg"
-                    }
-                ]
-            },
             "tests": []
         },
         {
@@ -254,11 +243,11 @@
             "colId": "52355d4d-0149-4fd1-b10d-31084f05ebbc",
             "containerId": "80294ce1-fa26-4183-ba02-214e862eaeee",
             "name": "Register",
-            "url": "http://localhost:4000/auth/register",
+            "url": "/auth/register",
             "method": "POST",
             "sortNum": 110000,
             "created": "2023-03-11T11:53:27.640Z",
-            "modified": "2023-03-11T11:59:33.902Z",
+            "modified": "2023-03-28T08:08:22.309Z",
             "headers": [],
             "params": [],
             "body": {

@@ -24,6 +24,10 @@
   width: 50%;
 }
 
+.container {
+  background-color: #c8e6c9 !important;
+}
+
 @media only screen and (max-width: 900px) {
   .bookPage {
     padding: 1rem;

@@ -10,7 +10,3 @@ input:-webkit-autofill:active {
 .MuiTextField-root {
   background: #fafafa;
 }
-
-.MuiGrid-root.MuiGrid-container {
-  background-color: #c8e6c9;
-}
