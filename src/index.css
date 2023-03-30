@@ -10,3 +10,10 @@ input:-webkit-autofill:active {
 .MuiTextField-root {
   background: #fafafa;
 }
+
+.MuiFormHelperText-root.Mui-error {
+  margin: 0;
+  text-align: center;
+  background-color: #e8f5e9;
+  font-size: 1rem;
+}
