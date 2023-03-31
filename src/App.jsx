@@ -6,6 +6,7 @@ import { Book } from "./components/Book";
 import { headers } from "./services/utils";
 import { useEffect, useState } from "react";
 import { ThemePalette } from "./theme/ThemePalette";
+import { ManageBooks } from "./pages/ManageBooks";
 
 function App() {
   const navigate = useNavigate();
@@ -31,6 +32,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/mainpage" element={<MainPage />} />
         <Route path="/book/:_id" element={<Book />} />
+        <Route path="/manageBooks" element={<ManageBooks />}></Route>
       </Routes>
     </ThemePalette>
   );

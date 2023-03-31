@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { green } from "@mui/material/colors";
 import classes from "./login.module.css";
 import { Stack } from "@mui/system";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { UserLogin } from "../services/auth/login";
 import { headers } from "../services/utils";
@@ -33,8 +33,7 @@ export function Login() {
         navigate("/mainpage");
       })
       .catch((e) => {
-        // if (e.response.data.errors != undefined) {
-        // }
+        console.log(e);
       });
 
     if (email === "") {

@@ -1,4 +1,4 @@
-import { Box, createTheme, Grid, Paper, Stack, styled, ThemeProvider, Typography } from "@mui/material";
+import { Box, ThemeProvider, Typography } from "@mui/material";
 import { Container } from "@mui/system";
 import moment from "moment/moment";
 import { useEffect, useState } from "react";
@@ -8,28 +8,6 @@ import { getBookById } from "../services/books";
 import classes from "../styles/mainpage.module.css";
 
 export function Book() {
-  const theme = createTheme({
-    typography: {
-      h4: {
-        fontFamily: "Montserrat",
-        fontWeight: 700,
-        marginBottom: "3rem",
-      },
-      h5: {
-        fontFamily: "Montserrat",
-        fontWeight: 500,
-        marginBottom: "3rem",
-      },
-      h6: {
-        fontFamily: "Inter",
-        marginBottom: "3rem",
-      },
-      body1: {
-        fontFamily: "Inter",
-        fontSize: "1.1rem",
-      },
-    },
-  });
   const { _id } = useParams();
   const [book, setBook] = useState([null]);
   useEffect(() => {

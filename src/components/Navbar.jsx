@@ -48,8 +48,8 @@ export function Navbar() {
     navigate("/mainpage");
   };
 
-  const CreateBook = () => {
-    navigate("/register");
+  const ManageBooks = () => {
+    navigate("/manageBooks");
   };
 
   return (
@@ -106,8 +106,8 @@ export function Navbar() {
               <MenuItem onClick={mainPage}>
                 <Typography textAlign="center">Home</Typography>
               </MenuItem>
-              <MenuItem onClick={CreateBook}>
-                <Typography textAlign="center">Create Book</Typography>
+              <MenuItem onClick={ManageBooks}>
+                <Typography textAlign="center">Manage Books</Typography>
               </MenuItem>
             </Menu>
           </Box>
@@ -132,8 +132,8 @@ export function Navbar() {
             HOME
           </Button>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            <Button onClick={CreateBook} sx={{ my: 2, color: "white", display: "block" }}>
-              CREATE BOOK
+            <Button onClick={ManageBooks} sx={{ my: 2, color: "white", display: "block" }}>
+              MANAGE BOOKS
             </Button>
           </Box>
 
