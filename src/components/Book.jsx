@@ -26,23 +26,27 @@ export function Book() {
 
   return (
     <AppLayout>
-      <ThemeProvider theme={theme}>
-        <Box className={classes.bookPage}>
-          <Container className={classes.bookImage}>
-            <img height="600" src={book.coverImageURL} alt="poza" />
-            <Box sx={{ marginLeft: "2rem" }}>
-              <Typography variant="h4">{book.title}</Typography>
-              <Typography variant="h5">by:{book.author}</Typography>
-              <Typography variant="h6">
-                Owner:
-                {book.owner?.firstName} {book.owner?.lastName}
-              </Typography>
-              <Typography sx={{ mb: 4 }}>Created At: {convertDate(book.createdAt)}</Typography>
-              <Typography variant="body1">{book.description}</Typography>
-            </Box>
-          </Container>
-        </Box>
-      </ThemeProvider>
+      <Box className={classes.bookPage}>
+        <Container className={classes.bookImage}>
+          <img height="600" src={book.coverImageURL} alt="poza" />
+          <Box sx={{ marginLeft: "2rem" }}>
+            <Typography sx={{ mb: 4 }} variant="h4">
+              {book.title}
+            </Typography>
+            <Typography sx={{ mb: 4 }} variant="h5">
+              by:{book.author}
+            </Typography>
+            <Typography sx={{ mb: 4 }} variant="h6">
+              Owner:
+              {book.owner?.firstName} {book.owner?.lastName}
+            </Typography>
+            <Typography sx={{ mb: 4 }}>Created At: {convertDate(book.createdAt)}</Typography>
+            <Typography sx={{ mb: 4 }} variant="body1">
+              {book.description}
+            </Typography>
+          </Box>
+        </Container>
+      </Box>
     </AppLayout>
   );
 }

@@ -17,3 +17,8 @@ input:-webkit-autofill:active {
   background-color: #e8f5e9;
   font-size: 1rem;
 }
+
+.bookImagesGrid {
+  height: 60px;
+  object-fit: cover;
+}
