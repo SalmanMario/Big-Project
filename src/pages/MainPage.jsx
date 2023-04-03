@@ -6,21 +6,21 @@ import { BookPost } from "../components/BookPost";
 
 export function MainPage() {
   // pt getBooks
-  const [apiPostBook, setApiPostBook] = useState([]);
+  const [apiPostBooks, setApiPostBooks] = useState([]);
 
   // cu search
-  // const [apiPostBook, setApiPostBook] = useState({
+  // const [apiPostBooks, setApiPostBooks] = useState({
   //   results: [],
-  //   totalCount: 0,
+  //   totalCount: 8,
   // });
   useEffect(() => {
     getBooks()
       .then((data) => {
-        setApiPostBook(data);
+        setApiPostBooks(data);
       })
       .catch((err) => {
         console.log("ERROR!!!", err);
       });
   }, []);
-  return <Box>{<BookPost bookItem={apiPostBook} />}</Box>;
+  return <Box>{<BookPost booksDisplay={apiPostBooks} />}</Box>;
 }

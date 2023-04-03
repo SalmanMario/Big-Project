@@ -1,13 +1,12 @@
-import { getBookById, getMyBooks } from "../services/books";
+import { getMyBooks } from "../services/books";
 import { useFetchData } from "../hooks/useFetchData";
 import { headers } from "../services/utils";
-import { Container, Typography } from "@mui/material";
+import { Button, Container, Grid, Typography } from "@mui/material";
 import { DataGrid, GridActionsCellItem } from "@mui/x-data-grid";
 import DeleteIcon from "@mui/icons-material/Delete";
 import moment from "moment";
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import classes from "../styles/mainpage.module.css";
 
 export function BookGrid() {
   const { data: bookGrid } = useFetchData(getMyBooks, []);
@@ -16,24 +15,25 @@ export function BookGrid() {
 
   const navigate = useNavigate();
 
-  function handleDelete({ id }) {
-    const url = `https://itschool-library.onrender.com/book/${id}`;
-    fetch(url, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((respone) => {
-        if (!respone.ok) {
-          throw new Error("Something went wrong");
-        }
-        navigate("/mainpage");
-      })
-      .catch((e) => {
-        console.log(e);
+  const handleDetele = async (_id) => {
+    try {
+      const localStorageToken = localStorage.getItem("token");
+      const response = await fetch(`https://itschool-library.onrender.com/book/${_id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorageToken}`,
+        },
       });
-  }
+      if (response.status) {
+        console.log("Ok");
+      } else {
+        throw new Error("Failed to delete item");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const columns = useMemo(() => [
     {
@@ -41,7 +41,7 @@ export function BookGrid() {
       headerName: "Book",
       width: 100,
       height: 100,
-      renderCell: (params) => <img className="bookImagesGrid" src={params.value}></img>,
+      renderCell: (params) => <img className="bookImagesGrid" src={params.value} />,
     },
     { field: "title", headerName: "Title", width: 150 },
     { field: "author", headerName: "Author", width: 150 },
@@ -60,9 +60,8 @@ export function BookGrid() {
       field: "createdAt",
       headerName: "Created At",
       width: 150,
-      valueFormatter: (params) => moment(params?.value).format("DD.MM.Y"),
+      valueFormatter: (params) => moment(params.value).format("DD.MM.Y"),
     },
-    // { field: "lastName", headerName: "Last Name", width: 150 },
     {
       field: "updatedAt",
       headerName: "Updated At",
@@ -71,20 +70,30 @@ export function BookGrid() {
     },
     {
       field: "actions",
-      type: "actions",
       headerName: "Actions",
       width: 80,
-      getActions: (params) => [<GridActionsCellItem icon={<DeleteIcon />} onClick={handleDelete} label="Delete" />],
+      renderCell: (params) => <button onClick={() => handleDetele(params.row._id)}>Delete</button>,
     },
   ]);
 
   return (
     <Container>
-      <Typography sx={{ my: 4 }} variant="h3">
-        Welcome to your Manage Books page
-      </Typography>
+      <Grid container>
+        <Grid item md={10}>
+          <Typography sx={{ my: 4 }} variant="h3">
+            Welcome to your Manage Books page
+          </Typography>
+        </Grid>
+        <Grid sx={{ display: "flex", justifyContent: "center", alignItems: "center" }} item md={2}>
+          <Button variant="contained">Add Book</Button>
+        </Grid>
+      </Grid>
       <div style={{ height: 400, width: "100%" }}>
-        <DataGrid autoHeight getRowHeight={() => 90} rows={bookGrid} columns={columns} />
+        {bookGrid.length === 0 ? (
+          "You have no books added"
+        ) : (
+          <DataGrid autoHeight getRowHeight={() => 90} rows={bookGrid} columns={columns} />
+        )}
       </div>
     </Container>
   );

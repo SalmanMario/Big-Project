@@ -14,7 +14,6 @@ export function BookComponent({ book }) {
   const handleGoToBook = () => {
     navigate(`/book/${book._id}`);
   };
-  console.log(book);
   return (
     <Grid sx={{ mb: 2 }} item lg={3} md={4} sm={6} xs={12}>
       <Box display="flex" justifyContent="center">

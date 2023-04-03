@@ -5,13 +5,13 @@ import { AppLayout } from "../layouts/AppLayout";
 import { BookComponent } from "./BookComponent";
 import classes from "../styles/mainpage.module.css";
 
-export function BookPost({ bookItem }) {
+export function BookPost({ booksDisplay }) {
   return (
     <AppLayout>
       <Box>
         <Grid className={classes.container} container spacing={1}>
-          {bookItem.map((book) => (
-            <BookComponent key={book.id} book={book} />
+          {booksDisplay.map((books) => (
+            <BookComponent key={books.id} book={books} />
           ))}
         </Grid>
       </Box>
