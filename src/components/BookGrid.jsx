@@ -15,6 +15,10 @@ export function BookGrid() {
 
   const navigate = useNavigate();
 
+  const addBook = () => {
+    navigate("/manageBooks/add");
+  };
+
   const handleDetele = async (_id) => {
     try {
       const localStorageToken = localStorage.getItem("token");
@@ -85,7 +89,9 @@ export function BookGrid() {
           </Typography>
         </Grid>
         <Grid sx={{ display: "flex", justifyContent: "center", alignItems: "center" }} item md={2}>
-          <Button variant="contained">Add Book</Button>
+          <Button onClick={addBook} variant="contained">
+            Add Book
+          </Button>
         </Grid>
       </Grid>
       <div style={{ height: 400, width: "100%" }}>

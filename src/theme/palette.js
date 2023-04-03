@@ -26,4 +26,12 @@ export const palette = {
             fontFamily: "Inter",
         },
     },
+    card: {
+        maxWidth: 320,
+        margin: "auto",
+    },
+    media: {
+        width: "100%",
+        objectFit: "cover",
+    },
 };
