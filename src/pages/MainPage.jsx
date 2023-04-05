@@ -1,26 +1,62 @@
-import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useEffect, useState } from "react";
-import { getBooks, getMyBooks } from "../services/books";
+import { baseURL } from "../services/books";
 import { BookPost } from "../components/BookPost";
+import { useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
+import axios from "axios";
+import { Pagination } from "@mui/material";
+import { AppLayout } from "../layouts/AppLayout";
 
 export function MainPage() {
-  // pt getBooks
-  const [apiPostBooks, setApiPostBooks] = useState([]);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const pageNumber = searchParams.get("page") ? parseInt(searchParams.get("page"), 10) : 1;
 
-  // cu search
-  // const [apiPostBooks, setApiPostBooks] = useState({
-  //   results: [],
-  //   totalCount: 8,
-  // });
+  const [apiPostBooks, setApiPostBooks] = useState({
+    results: [],
+    totalCount: 0,
+  });
+
   useEffect(() => {
-    getBooks()
-      .then((data) => {
-        setApiPostBooks(data);
+    const limit = 8;
+    const offset = (pageNumber - 1) * limit;
+
+    axios
+      .get(`${baseURL}/book/search?limit=${limit}&offset=${offset}`)
+      .then((response) => {
+        setApiPostBooks(response.data);
       })
-      .catch((err) => {
-        console.log("ERROR!!!", err);
+      .catch((error) => {
+        console.log(error);
       });
-  }, []);
-  return <Box>{<BookPost booksDisplay={apiPostBooks} />}</Box>;
+  }, [pageNumber]);
+
+  const totalPages = Math.ceil(apiPostBooks.totalCount / 8);
+
+  const handleChange = (event, value) => {
+    setSearchParams((query) => {
+      const key = "page";
+      const newValue = value.toString();
+      const resetOn = "1";
+      const transformer = (v) => v.toString();
+
+      if (query.has(key)) {
+        query.set(key, newValue);
+      } else {
+        query.append(key, newValue);
+      }
+      if (resetOn === transformer(newValue)) {
+        query.delete(key);
+      }
+      return query;
+    });
+  };
+
+  return (
+    <AppLayout>
+      <Box>
+        {<BookPost booksDisplay={apiPostBooks.results} />}
+        <Pagination sx={{ ml: 8 }} count={totalPages} page={pageNumber} onChange={handleChange}></Pagination>
+      </Box>
+    </AppLayout>
+  );
 }

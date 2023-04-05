@@ -1,13 +1,12 @@
-import { useFetchData } from "../hooks/useFetchData";
 import { fetchAndParse, headers } from "./utils";
 
 export const baseURL = 'https://itschool-library.onrender.com';
 
-export function getBooks() {
-    return fetchAndParse(`${baseURL}/book/`, {
-        headers
-    });
-}
+// export function getBooks() {
+//     return fetchAndParse(`${baseURL}/book/`, {
+//         headers
+//     });
+// }
 
 export function getBookById(_id) {
     return fetchAndParse(`${baseURL}/book/${_id}`, {
@@ -22,8 +21,8 @@ export function getMyBooks() {
 }
 
 // Get books pentru paginare,limita carti pe o pagina
-// export function getBooks() {
-//     return fetchAndParse(`${baseURL}/book/search?limit=8&search&offset=0`, {
-//         headers
-//     });
-// }
+export function getBooks() {
+    return fetchAndParse(`${baseURL}/book/search?limit=8&search&offset=0`, {
+        headers
+    });
+}

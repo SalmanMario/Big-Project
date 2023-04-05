@@ -4,7 +4,7 @@ import { Register } from "./pages/Register";
 import { MainPage } from "./pages/MainPage";
 import { Book } from "./components/Book";
 import { headers } from "./services/utils";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { ThemePalette } from "./theme/ThemePalette";
 import { ManageBooks } from "./pages/ManageBooks";
 import { AddBooks } from "./pages/AddBooks";
@@ -33,6 +33,7 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/mainpage" element={<MainPage />} />
+        <Route path="/mainpage/*" element={<MainPage />} />
         <Route path="/book/:_id" element={<Book />} />
         <Route path="/manageBooks/edit/:_id" element={<EditBooks />} />
         <Route path="/manageBooks" element={<ManageBooks />}></Route>
