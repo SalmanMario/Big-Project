@@ -50,20 +50,3 @@ export function Book() {
     </AppLayout>
   );
 }
-
-{
-  /* <img height="600" src={book.coverImageURL} alt="poza" />
-      <Typography sx={{ mb: 4 }} variant="h4">
-        Title: {book.title}
-      </Typography>
-      <Typography sx={{ mb: 4 }} variant="h5">
-        Author: {book.author}
-      </Typography>
-      <Typography sx={{ mb: 4 }} variant="h6">
-        Owner:
-        {book.owner?.firstName}
-        {book.owner?.lastName}
-      </Typography>
-      <Typography sx={{ mb: 4 }}>Created At: {convertDate(book.createdAt)}</Typography>
-      <Typography variant="body1">{book.description}</Typography> */
-}

@@ -1,18 +1,31 @@
-import { Box, Button, Container, Grid, TextField, Typography } from "@mui/material";
+import { Box, Button, Container, FormLabel, Grid, TextField, Typography } from "@mui/material";
 import { AppLayout } from "../layouts/AppLayout";
 import { green } from "@mui/material/colors";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { fetchAndParse } from "../services/utils";
-import { baseURL } from "../services/books";
-import { useNavigate } from "react-router-dom";
+import { baseURL, getBookById } from "../services/books";
+import { useNavigate, useParams } from "react-router-dom";
 
-export function AddBooks() {
+export function EditBooks() {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [description, setDescription] = useState("");
   const [file, setFile] = useState(null);
 
-  const [selectedImage, setSelectedImage] = useState();
+  const [selectedImage, setSelectedImage] = useState("");
+
+  const { _id } = useParams();
+
+  useEffect(() => {
+    if (_id) {
+      getBookById(_id).then((book) => {
+        setTitle(book.title);
+        setAuthor(book.author);
+        setDescription(book.description);
+        setSelectedImage(book.coverImageURL);
+      });
+    }
+  }, [_id]);
 
   const imageChange = (e) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -27,12 +40,13 @@ export function AddBooks() {
   };
 
   const handleFileChange = (e) => {
-    if (e.target.files) {
+    console.log(e.target.files);
+    if (e.target.files && e.target.files.length > 0) {
       setFile(e.target.files[0]);
     }
   };
 
-  async function createBook(payload) {
+  async function editBook(payload) {
     const formData = new FormData();
     const localStorageToken = localStorage.getItem("token");
 
@@ -44,8 +58,8 @@ export function AddBooks() {
     console.log(payload);
 
     try {
-      await fetchAndParse(`${baseURL}/book`, {
-        method: "POST",
+      await fetchAndParse(`${baseURL}/book/${_id}`, {
+        method: "PUT",
         body: formData,
         headers: {
           Authorization: `Bearer ${localStorageToken}`,
@@ -56,11 +70,12 @@ export function AddBooks() {
       console.log(error);
     }
   }
+
   return (
     <AppLayout>
       <Container>
         <Typography sx={{ my: 4 }} variant="h4">
-          Add a book
+          Edit a book
         </Typography>
         <Grid container>
           <Grid sx={{ display: "flex", flexDirection: "column", alignItems: "baseline" }} item md={6} xs={12}>
@@ -108,8 +123,8 @@ export function AddBooks() {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             ></TextField>
-            <Button onClick={() => createBook({ title, author, description, file })} variant="contained">
-              Add Book
+            <Button onClick={() => editBook({ title, author, description, file })} variant="contained">
+              Edit The book
             </Button>
           </Grid>
           <Grid item md={6} xs={12}>
@@ -121,9 +136,16 @@ export function AddBooks() {
                 Upload Book Image
                 <input id="file-upload" required accept="image/*" type="file" onChange={imageChange} />
               </Button>
-              {selectedImage && (
+              {selectedImage === file ? (
                 <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column" }}>
-                  <img style={{ width: 120, height: 180 }} src={URL.createObjectURL(selectedImage)} alt="photo" />
+                  <img style={{ width: 150, height: 120 }} src={URL.createObjectURL(selectedImage)} alt="photo" />
+                  <Button variant="contained" onClick={removeSelectedImage}>
+                    Remove This Image
+                  </Button>
+                </Box>
+              ) : (
+                <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column" }}>
+                  <img style={{ width: 120, height: 180 }} src={selectedImage} alt="photo" />
                   <Button variant="contained" onClick={removeSelectedImage}>
                     Remove This Image
                   </Button>

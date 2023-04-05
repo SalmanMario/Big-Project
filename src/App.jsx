@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { ThemePalette } from "./theme/ThemePalette";
 import { ManageBooks } from "./pages/ManageBooks";
 import { AddBooks } from "./pages/AddBooks";
+import { EditBooks } from "./pages/EditBooks";
 
 function App() {
   const navigate = useNavigate();
@@ -33,6 +34,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/mainpage" element={<MainPage />} />
         <Route path="/book/:_id" element={<Book />} />
+        <Route path="/manageBooks/edit/:_id" element={<EditBooks />} />
         <Route path="/manageBooks" element={<ManageBooks />}></Route>
         <Route path="/manageBooks/add" element={<AddBooks />}></Route>
       </Routes>

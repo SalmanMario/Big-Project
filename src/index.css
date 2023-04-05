@@ -22,3 +22,14 @@ input:-webkit-autofill:active {
   height: 60px;
   object-fit: cover;
 }
+
+input[type="file"] {
+  display: none;
+}
+
+@media screen and (max-width: 500px) {
+  .MuiInputBase-root,
+  .MuiFormControl-root {
+    max-width: 300px;
+  }
+}
