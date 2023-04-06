@@ -25,6 +25,10 @@ export const palette = {
         body1: {
             fontFamily: "Inter",
         },
+        h2: {
+            fontFamily: "Montserrat",
+            fontWeight: 700,
+        }
     },
     card: {
         maxWidth: 320,

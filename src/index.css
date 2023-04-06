@@ -27,9 +27,24 @@ input[type="file"] {
   display: none;
 }
 
+.errorPage {
+  margin: 2rem 0 2rem 0;
+}
+
 @media screen and (max-width: 500px) {
   .MuiInputBase-root,
   .MuiFormControl-root {
     max-width: 300px;
   }
+  .errorPage {
+    width: 320px;
+    height: 320px;
+  }
+}
+
+.bookNotFoundCenter {
+  flex: 1 1 0%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

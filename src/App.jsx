@@ -1,4 +1,4 @@
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import { Login } from "./pages/Login";
 import { Register } from "./pages/Register";
 import { MainPage } from "./pages/MainPage";
@@ -9,6 +9,7 @@ import { ThemePalette } from "./theme/ThemePalette";
 import { ManageBooks } from "./pages/ManageBooks";
 import { AddBooks } from "./pages/AddBooks";
 import { EditBooks } from "./pages/EditBooks";
+import { Error404 } from "./pages/Error404";
 
 function App() {
   const navigate = useNavigate();
@@ -33,11 +34,13 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/mainpage" element={<MainPage />} />
-        <Route path="/mainpage/*" element={<MainPage />} />
+        {/* <Route path="/mainpage/*" element={<MainPage />} /> */}
         <Route path="/book/:_id" element={<Book />} />
         <Route path="/manageBooks/edit/:_id" element={<EditBooks />} />
-        <Route path="/manageBooks" element={<ManageBooks />}></Route>
-        <Route path="/manageBooks/add" element={<AddBooks />}></Route>
+        <Route path="/manageBooks" element={<ManageBooks />} />
+        <Route path="/manageBooks/add" element={<AddBooks />} />
+        <Route path="/404" element={<Error404 />} />
+        <Route path="*" element={<Navigate to="/404" replace />} />
       </Routes>
     </ThemePalette>
   );

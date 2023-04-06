@@ -2,11 +2,12 @@ import { Box } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import { baseURL } from "../services/books";
 import { BookPost } from "../components/BookPost";
-import { useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import axios from "axios";
-import { Pagination } from "@mui/material";
+import { Container, Grid, InputAdornment, Pagination, TextField, Typography } from "@mui/material";
 import { AppLayout } from "../layouts/AppLayout";
-
+import SearchIcon from "@mui/icons-material/Search";
+import classes from "../styles/mainpage.module.css";
 export function MainPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const pageNumber = searchParams.get("page") ? parseInt(searchParams.get("page"), 10) : 1;
@@ -19,6 +20,7 @@ export function MainPage() {
   useEffect(() => {
     const limit = 8;
     const offset = (pageNumber - 1) * limit;
+    const page = searchParams.get("page") || 1; // set default page to 1
 
     axios
       .get(`${baseURL}/book/search?limit=${limit}&offset=${offset}`)
@@ -47,15 +49,54 @@ export function MainPage() {
       if (resetOn === transformer(newValue)) {
         query.delete(key);
       }
+
       return query;
     });
   };
 
   return (
     <AppLayout>
-      <Box>
-        {<BookPost booksDisplay={apiPostBooks.results} />}
-        <Pagination sx={{ ml: 8 }} count={totalPages} page={pageNumber} onChange={handleChange}></Pagination>
+      <Box className={classes.containerColor} sx={{ px: 10 }}>
+        <Grid container>
+          <Grid sx={{ my: 2 }} item md={6}>
+            <Typography variant="h2">Home Page</Typography>
+          </Grid>
+          <Grid sx={{ my: 3, display: "flex", justifyContent: "end" }} item md={6}>
+            <TextField
+              label="search"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon />
+                  </InputAdornment>
+                ),
+              }}
+            ></TextField>
+          </Grid>
+        </Grid>
+      </Box>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          flex: "1 1 0%",
+          flexDirection: "column",
+        }}
+      >
+        {apiPostBooks.results.length > 0 ? (
+          <BookPost booksDisplay={apiPostBooks.results} />
+        ) : (
+          <Box className="bookNotFoundCenter">
+            <Typography variant="h3">Books not found</Typography>
+          </Box>
+        )}
+        <Pagination
+          color="primary"
+          sx={{ ml: 8, my: 1 }}
+          count={totalPages}
+          page={pageNumber}
+          onChange={handleChange}
+        ></Pagination>
       </Box>
     </AppLayout>
   );

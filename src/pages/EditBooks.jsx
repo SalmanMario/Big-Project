@@ -18,12 +18,16 @@ export function EditBooks() {
 
   useEffect(() => {
     if (_id) {
-      getBookById(_id).then((book) => {
-        setTitle(book.title);
-        setAuthor(book.author);
-        setDescription(book.description);
-        setSelectedImage(book.coverImageURL);
-      });
+      getBookById(_id)
+        .then((book) => {
+          setTitle(book.title);
+          setAuthor(book.author);
+          setDescription(book.description);
+          setSelectedImage(book.coverImageURL);
+        })
+        .catch((error) => {
+          navigate("/404");
+        });
     }
   }, [_id]);
 
@@ -67,7 +71,7 @@ export function EditBooks() {
       });
       navigate("/manageBooks");
     } catch (error) {
-      console.log(error);
+      console.log(error, "Eu is");
     }
   }
 
