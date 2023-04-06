@@ -7,7 +7,7 @@ import { AppLayout } from "../layouts/AppLayout";
 import { getBookById } from "../services/books";
 import classes from "../styles/mainpage.module.css";
 
-export function Book() {
+export function ViewBook() {
   const navigate = useNavigate();
   const { _id } = useParams();
   const [book, setBook] = useState([null]);
@@ -31,7 +31,7 @@ export function Book() {
 
   return (
     <AppLayout>
-      <Container className={classes.bookPage}>
+      <Container className={[classes.bookPage, classes.containerColor]}>
         <Grid container>
           <Grid item md={6} xs={12}>
             <img className={classes.bookImage} height="600" src={book.coverImageURL} alt="poza" />

@@ -2,7 +2,7 @@ import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import { Login } from "./pages/Login";
 import { Register } from "./pages/Register";
 import { MainPage } from "./pages/MainPage";
-import { Book } from "./components/Book";
+import { ViewBook } from "./pages/ViewBook";
 import { headers } from "./services/utils";
 import { useEffect } from "react";
 import { ThemePalette } from "./theme/ThemePalette";
@@ -35,7 +35,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/mainpage" element={<MainPage />} />
         {/* <Route path="/mainpage/*" element={<MainPage />} /> */}
-        <Route path="/book/:_id" element={<Book />} />
+        <Route path="/book/:_id" element={<ViewBook />} />
         <Route path="/manageBooks/edit/:_id" element={<EditBooks />} />
         <Route path="/manageBooks" element={<ManageBooks />} />
         <Route path="/manageBooks/add" element={<AddBooks />} />
