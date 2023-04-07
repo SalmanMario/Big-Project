@@ -52,7 +52,9 @@ export function EditBooks() {
 
   async function editBook(payload) {
     const formData = new FormData();
-    const localStorageToken = localStorage.getItem("token");
+    const localStorageToken = localStorage.getItem("worldOfBooks");
+    const tokenObject = JSON.parse(localStorageToken);
+    const token = tokenObject.token;
 
     formData.append("title", payload.title);
     formData.append("author", payload.author);
@@ -66,7 +68,7 @@ export function EditBooks() {
         method: "PUT",
         body: formData,
         headers: {
-          Authorization: `Bearer ${localStorageToken}`,
+          Authorization: `Bearer ${token}`,
         },
       });
       navigate("/manageBooks");

@@ -22,8 +22,9 @@ import EditIcon from "@mui/icons-material/Edit";
 
 export function BookGrid() {
   const { data: bookGrid } = useFetchData(getMyBooks, []);
-  const localStorageToken = localStorage.getItem("token");
-  headers["Authorization"] = `Bearer ${localStorageToken}`;
+  const localStorageToken = localStorage.getItem("worldOfBooks");
+  const tokenObject = JSON.parse(localStorageToken);
+  const token = tokenObject.token;
   const [open, setOpen] = useState(false);
 
   const navigate = useNavigate();
@@ -48,12 +49,10 @@ export function BookGrid() {
 
   const handleDetele = async (_id) => {
     try {
-      const localStorageToken = localStorage.getItem("token");
       const response = await fetch(`https://itschool-library.onrender.com/book/${_id}`, {
         method: "DELETE",
         headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorageToken}`,
+          Authorization: `Bearer ${token}`,
         },
       });
       if (response.status) {

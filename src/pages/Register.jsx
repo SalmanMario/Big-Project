@@ -1,83 +1,73 @@
-import { Alert, Button, Stack, TextField, Typography } from "@mui/material";
+import { Alert, Box, Button, Stack, TextField, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import classes from "./login.module.css";
 import { green } from "@mui/material/colors";
 import { useState } from "react";
-import { UserRegister } from "../services/auth/register";
-import { Box } from "@mui/system";
+import { z } from "zod";
+import { registerServices } from "../services/auth";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+const UserRegisterSchema = z
+  .object({
+    firstName: z.string().min(2, "First Name is required"),
+    lastName: z.string().min(2, "Last Name is required"),
+    email: z.string().min(8, "Email is required").email("Invalid Email"),
+    password: z.string().min(4, "Password is required"),
+    confirmPassword: z.string().min(4, "Confirm Password is required"),
+  })
+  .superRefine(({ confirmPassword, password }, ctx) => {
+    if (confirmPassword !== password) {
+      ctx.addIssue({
+        code: "custom",
+        message: "The passwords did not match",
+        path: ["confirmPassword"],
+      });
+    }
+  });
 
 export function Register() {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-
-  const [passwordError, setPasswordError] = useState(false);
-  const [passwordErrorText, setPaswordErrorText] = useState(false);
-
-  const [lastNameError, setLastNameError] = useState(false);
-  const [lastNameErrorText, setLastNameErrorText] = useState(false);
-
-  const [firstNameError, setFirstNameError] = useState(false);
-  const [firstNameErrorText, setFirstNameErrorText] = useState(false);
-
-  const [emailError, setEmailError] = useState(false);
-  const [emailErrorText, setEmailErrorText] = useState(false);
-
+  const [serverError, setServerError] = useState("");
   const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
+    resolver: zodResolver(UserRegisterSchema),
+  });
+
+  function displayErrors(key) {
+    const error = errors[key];
+    return {
+      error: Boolean(error),
+      helperText: error && error.message,
+    };
+  }
+
+  function onSubmit(data) {
+    console.log(data);
+    setServerError("");
+    registerServices(data)
+      .then((user) => {
+        console.log("Success", user);
+        navigate("/");
+      })
+      .catch((err) => {
+        console.log("err", err);
+        setServerError(err.data.message);
+      });
+  }
+
   const goToLogin = () => {
     navigate("/");
-  };
-
-  const registerAction = (e) => {
-    e.preventDefault();
-    let payload = {
-      firstName: firstName,
-      lastName: lastName,
-      email: email,
-      password: password,
-      confirmPassword: confirmPassword,
-    };
-    const emailRegex = /^[a-z0-9_.+%#-]+@[a-z0-9.-]+\.[a-z]{2,4}$/i;
-    if (emailRegex.test(email) || password !== confirmPassword || confirmPassword !== password) {
-      setEmailError(true);
-      setEmailErrorText("Your email is invalid!");
-      setPasswordError(true);
-      setPaswordErrorText("Password is invalid or does not match!");
-    } else {
-      UserRegister(payload)
-        .then((r) => {
-          localStorage.setItem("token", r.data.token);
-          navigate("/");
-        })
-        .catch((e) => {
-          // if (e.response.data.errors != undefined) {
-          // }
-        });
-    }
-    if (password === "" && confirmPassword === "") {
-      setPasswordError(true);
-      setPaswordErrorText("Please enter a password");
-    }
-    if (firstName === "") {
-      setFirstNameError(true);
-      setFirstNameErrorText("Please enter your first name");
-    } else if (firstName.length > 0) {
-      setFirstNameError(false);
-      setFirstNameErrorText(false);
-    }
-    if (lastName === "") {
-      setLastNameError(true);
-      setLastNameErrorText("Please enter your last name");
-    } else if (lastName.length > 0) {
-      setLastNameError(false);
-      setLastNameErrorText(false);
-    }
-    if (email === "") {
-      setEmailError(true);
-      setEmailErrorText("Please enter a valid email");
-    }
   };
 
   return (
@@ -91,98 +81,85 @@ export function Register() {
       <Typography sx={{ fontFamily: "Montserrat", fontWeight: 700, color: green["A400"] }} variant="h3">
         Register
       </Typography>
-      <TextField
-        InputLabelProps={{
-          style: { color: green["A400"], fontFamily: "Montserrat", fontSize: 16, fontWeight: 700 },
-        }}
-        sx={{ input: { fontFamily: "Inter", fontWeight: 500, fontSize: 16 }, m: 2, width: 340 }}
-        required
-        type="text"
-        id="firstName"
-        variant="outlined"
-        label="First Name"
-        placeholder="Zeke"
-        value={firstName}
-        error={firstNameError}
-        helperText={firstNameErrorText}
-        onChange={(e) => setFirstName(e.target.value)}
-      ></TextField>
-      <TextField
-        InputLabelProps={{
-          style: { color: green["A400"], fontFamily: "Montserrat", fontSize: 16, fontWeight: 700 },
-        }}
-        sx={{ input: { fontFamily: "Inter", fontWeight: 500, fontSize: 16 }, m: 2, width: 340 }}
-        required
-        type="text"
-        id="lastName"
-        variant="outlined"
-        label="Last Name"
-        placeholder="Samson"
-        value={lastName}
-        error={lastNameError}
-        helperText={lastNameErrorText}
-        onChange={(e) => setLastName(e.target.value)}
-      ></TextField>
-      <TextField
-        InputLabelProps={{
-          style: { color: green["A400"], fontFamily: "Montserrat", fontSize: 16, fontWeight: 700 },
-        }}
-        sx={{ input: { fontFamily: "Inter", fontWeight: 500, fontSize: 16 }, m: 2, width: 340 }}
-        required
-        type="email"
-        id="email"
-        variant="outlined"
-        label="Email"
-        placeholder="azazel@yahoo.com"
-        value={email}
-        error={emailError}
-        helperText={emailErrorText}
-        onChange={(e) => setEmail(e.target.value)}
-      ></TextField>
+      <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)}>
+        <TextField
+          InputLabelProps={{
+            style: { color: green["A400"], fontFamily: "Montserrat", fontSize: 16, fontWeight: 700 },
+          }}
+          sx={{ input: { fontFamily: "Inter", fontWeight: 500, fontSize: 16 }, m: 2, width: 340 }}
+          {...register("firstName")}
+          {...displayErrors("firstName")}
+          required
+          type="text"
+          variant="outlined"
+          label="First Name"
+          placeholder="Zeke"
+        ></TextField>
+        <TextField
+          InputLabelProps={{
+            style: { color: green["A400"], fontFamily: "Montserrat", fontSize: 16, fontWeight: 700 },
+          }}
+          sx={{ input: { fontFamily: "Inter", fontWeight: 500, fontSize: 16 }, m: 2, width: 340 }}
+          required
+          {...register("lastName")}
+          {...displayErrors("lastName")}
+          type="text"
+          variant="outlined"
+          label="Last Name"
+          placeholder="Samson"
+        ></TextField>
+        <TextField
+          InputLabelProps={{
+            style: { color: green["A400"], fontFamily: "Montserrat", fontSize: 16, fontWeight: 700 },
+          }}
+          sx={{ input: { fontFamily: "Inter", fontWeight: 500, fontSize: 16 }, m: 2, width: 340 }}
+          {...register("email")}
+          {...displayErrors("email")}
+          required
+          type="email"
+          variant="outlined"
+          label="Email"
+          placeholder="azazel@yahoo.com"
+        ></TextField>
 
-      <TextField
-        InputLabelProps={{
-          style: { color: green["A400"], fontFamily: "Montserrat", fontSize: 16, fontWeight: 700 },
-        }}
-        sx={{ input: { fontFamily: "Inter", fontWeight: 500, fontSize: 16 }, m: 2, width: 340 }}
-        required
-        type="password"
-        id="password"
-        variant="outlined"
-        label="Password"
-        placeholder="************"
-        value={password}
-        error={passwordError}
-        helperText={passwordErrorText}
-        onChange={(e) => setPassword(e.target.value)}
-      ></TextField>
-      <TextField
-        InputLabelProps={{
-          style: { color: green["A400"], fontFamily: "Montserrat", fontSize: 16, fontWeight: 700 },
-        }}
-        sx={{ input: { fontFamily: "Inter", fontWeight: 500, fontSize: 16 }, m: 2, width: 340 }}
-        required
-        type="password"
-        id="confirmPassword"
-        variant="outlined"
-        label="Confirm Password"
-        placeholder="************"
-        value={confirmPassword}
-        error={passwordError}
-        helperText={passwordErrorText}
-        onChange={(e) => setConfirmPassword(e.target.value)}
-      ></TextField>
-      <Button
-        onClick={(e) => {
-          registerAction(e);
-        }}
-        variant="contained"
-      >
-        Submit
-      </Button>
-      <Button onClick={goToLogin} variant="contained">
-        Go back
-      </Button>
+        <TextField
+          InputLabelProps={{
+            style: { color: green["A400"], fontFamily: "Montserrat", fontSize: 16, fontWeight: 700 },
+          }}
+          sx={{ input: { fontFamily: "Inter", fontWeight: 500, fontSize: 16 }, m: 2, width: 340 }}
+          {...register("password")}
+          {...displayErrors("password")}
+          required
+          type="password"
+          variant="outlined"
+          label="Password"
+          placeholder="************"
+        ></TextField>
+        <TextField
+          InputLabelProps={{
+            style: { color: green["A400"], fontFamily: "Montserrat", fontSize: 16, fontWeight: 700 },
+          }}
+          sx={{ input: { fontFamily: "Inter", fontWeight: 500, fontSize: 16 }, m: 2, width: 340 }}
+          required
+          {...register("confirmPassword")}
+          {...displayErrors("confirmPassword")}
+          type="password"
+          variant="outlined"
+          label="Confirm Password"
+          placeholder="************"
+        ></TextField>
+        {serverError && (
+          <Alert sx={{ my: 2 }} severity="error">
+            {serverError}
+          </Alert>
+        )}
+        <Button type="submit" variant="contained">
+          Submit
+        </Button>
+        <Button onClick={goToLogin} variant="contained">
+          Go back
+        </Button>
+      </Box>
     </Stack>
   );
 }

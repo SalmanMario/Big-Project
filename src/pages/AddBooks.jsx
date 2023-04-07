@@ -34,7 +34,9 @@ export function AddBooks() {
 
   async function createBook(payload) {
     const formData = new FormData();
-    const localStorageToken = localStorage.getItem("token");
+    const localStorageToken = localStorage.getItem("worldOfBooks");
+    const tokenObject = JSON.parse(localStorageToken);
+    const token = tokenObject.token;
 
     formData.append("title", payload.title);
     formData.append("author", payload.author);
@@ -48,7 +50,7 @@ export function AddBooks() {
         method: "POST",
         body: formData,
         headers: {
-          Authorization: `Bearer ${localStorageToken}`,
+          Authorization: `Bearer ${token}`,
         },
       });
       navigate("/manageBooks");

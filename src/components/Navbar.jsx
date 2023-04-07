@@ -14,10 +14,10 @@ import MenuItem from "@mui/material/MenuItem";
 import LocalLibraryIcon from "@mui/icons-material/LocalLibrary";
 import { green } from "@mui/material/colors";
 import { useNavigate } from "react-router-dom";
-import { headers } from "../services/utils";
-import { useState } from "react";
+import { useAuthContext } from "../contexts/Auth/AuthContext";
 
 export function Navbar() {
+  const { logout } = useAuthContext();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -38,11 +38,6 @@ export function Navbar() {
 
   // Trebuie adaugata functionalitatea de logout
   const navigate = useNavigate();
-  const Logout = () => {
-    localStorage.removeItem("token");
-    delete headers["Authorization"];
-    navigate("/");
-  };
 
   const mainPage = () => {
     navigate("/mainpage");
@@ -159,7 +154,7 @@ export function Navbar() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              <MenuItem onClick={Logout}>
+              <MenuItem onClick={logout}>
                 <Typography textAlign="center">Logout</Typography>
               </MenuItem>
             </Menu>

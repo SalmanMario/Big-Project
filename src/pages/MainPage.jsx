@@ -1,5 +1,5 @@
 import { Box } from "@mui/system";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { baseURL } from "../services/books";
 import { BookPost } from "../components/BookPost";
 import { useSearchParams } from "react-router-dom";
@@ -8,7 +8,10 @@ import { Container, Grid, InputAdornment, Pagination, TextField, Typography } fr
 import { AppLayout } from "../layouts/AppLayout";
 import SearchIcon from "@mui/icons-material/Search";
 import classes from "../styles/mainpage.module.css";
+import { useAuthContext } from "../contexts/Auth/AuthContext";
+import { fetchAndParse } from "../services/utils";
 export function MainPage() {
+  const { user } = useAuthContext();
   const [searchParams, setSearchParams] = useSearchParams();
   const pageNumber = searchParams.get("page") ? parseInt(searchParams.get("page"), 10) : 1;
 
@@ -22,10 +25,10 @@ export function MainPage() {
     const offset = (pageNumber - 1) * limit;
     const page = searchParams.get("page") || 1; // set default page to 1
 
-    axios
-      .get(`${baseURL}/book/search?limit=${limit}&offset=${offset}`)
+    fetchAndParse(`${baseURL}/book/search?limit=${limit}&offset=${offset}`)
       .then((response) => {
-        setApiPostBooks(response.data);
+        setApiPostBooks(response);
+        console.log(response);
       })
       .catch((error) => {
         console.log(error);
@@ -59,7 +62,9 @@ export function MainPage() {
       <Box className={classes.containerColor} sx={{ px: 10 }}>
         <Grid container>
           <Grid sx={{ my: 2 }} item md={6}>
-            <Typography variant="h2">Home Page</Typography>
+            <Typography variant="h4">
+              Welcome to your page {user.firstName} {user.lastName}
+            </Typography>
           </Grid>
           <Grid sx={{ my: 3, display: "flex", justifyContent: "end" }} item md={6}>
             <TextField
