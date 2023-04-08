@@ -1,5 +1,5 @@
 import { Alert, Box, Button, Stack, TextField, Typography } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import classes from "./login.module.css";
 import { green } from "@mui/material/colors";
 import { useState } from "react";
@@ -20,7 +20,7 @@ const UserRegisterSchema = z
     if (confirmPassword !== password) {
       ctx.addIssue({
         code: "custom",
-        message: "The passwords did not match",
+        message: "Passwords don't match",
         path: ["confirmPassword"],
       });
     }
@@ -81,7 +81,12 @@ export function Register() {
       <Typography sx={{ fontFamily: "Montserrat", fontWeight: 700, color: green["A400"] }} variant="h3">
         Register
       </Typography>
-      <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)}>
+      <Box
+        sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}
+        component="form"
+        noValidate
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <TextField
           InputLabelProps={{
             style: { color: green["A400"], fontFamily: "Montserrat", fontSize: 16, fontWeight: 700 },
@@ -153,12 +158,17 @@ export function Register() {
             {serverError}
           </Alert>
         )}
-        <Button type="submit" variant="contained">
+        <Button sx={{ width: 150 }} type="submit" variant="contained">
           Submit
         </Button>
-        <Button onClick={goToLogin} variant="contained">
-          Go back
-        </Button>
+        <Link
+          style={{ fontFamily: "Inter", fontWeight: 700, fontSize: 18, color: green["A400"] }}
+          component={NavLink}
+          to="/"
+          variant="contained"
+        >
+          Already got an account? Log in!
+        </Link>
       </Box>
     </Stack>
   );

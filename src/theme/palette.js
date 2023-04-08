@@ -9,7 +9,7 @@ export const palette = {
     },
     typography: {
         button: {
-            marginBottom: "0.5rem",
+            marginBottom: "1rem",
             marginTop: "1rem",
             fontFamily: "Montserrat",
             fontWeight: 700,
@@ -28,7 +28,23 @@ export const palette = {
         h2: {
             fontFamily: "Montserrat",
             fontWeight: 700,
-        }
+        },
+        h3: {
+            fontFamily: "Montserrat",
+            fontWeight: 700,
+        },
+        components: {
+            MuiInput: {
+                styleOverrides: {
+                    input: {
+                        fontFamily: 'Inter',
+                        fontWeight: 500,
+                        fontSize: 16,
+                    },
+                },
+            },
+        },
+
     },
     card: {
         maxWidth: 320,

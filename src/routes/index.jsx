@@ -10,6 +10,8 @@ import { EditBooks } from "../pages/EditBooks";
 import { Error404 } from "../pages/Error404";
 import { AuthContextProvider } from "../contexts/Auth/AuthContextProvider";
 import { useAuthContext } from "../contexts/Auth/AuthContext";
+import { AppLayout } from "../layouts/AppLayout";
+import AuthLayout from "../layouts/AuthLayout";
 
 export function RoutesPages() {
   const navigate = useNavigate();
@@ -25,8 +27,10 @@ export function RoutesPages() {
     <AuthContextProvider>
       <ThemePalette>
         <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          <Route element={<AuthLayout />}>
+            <Route path="/" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+          </Route>
           <Route element={<ProtectedRoute />}>
             <Route path="/mainpage" element={<MainPage />} />
             <Route path="/book/:_id" element={<ViewBook />} />

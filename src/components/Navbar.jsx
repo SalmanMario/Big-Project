@@ -17,7 +17,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../contexts/Auth/AuthContext";
 
 export function Navbar() {
-  const { logout } = useAuthContext();
+  const { logout, user } = useAuthContext();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -133,9 +133,12 @@ export function Navbar() {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="User">
+            <Tooltip title={`${user.firstName} ${user.lastName}`}>
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar variant="dot" />
+                <Avatar>
+                  {user.firstName[0]}
+                  {user.lastName[0]}
+                </Avatar>
               </IconButton>
             </Tooltip>
             <Menu

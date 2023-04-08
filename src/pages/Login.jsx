@@ -1,5 +1,5 @@
 import { Alert, Box, Button, TextField, Typography } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { green } from "@mui/material/colors";
 import classes from "./login.module.css";
 import { Stack } from "@mui/system";
@@ -31,10 +31,6 @@ export function Login() {
       });
   }
 
-  const goToRegister = () => {
-    navigate("/register");
-  };
-
   return (
     <Stack
       className={classes.loginPage}
@@ -43,16 +39,20 @@ export function Login() {
       alignItems="center"
       flexDirection="column"
     >
-      <Typography sx={{ fontFamily: "Montserrat", fontWeight: 700, color: green["A400"] }} variant="h3">
+      <Typography sx={{ color: green["A400"] }} variant="h3">
         Login
       </Typography>
-      <Box component="form" onSubmit={onSubmit}>
+      <Box
+        sx={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column" }}
+        component="form"
+        onSubmit={onSubmit}
+      >
         <TextField
           {...registerField("email")}
           InputLabelProps={{
             style: { color: green["A400"], fontFamily: "Montserrat", fontSize: 16, fontWeight: 700 },
           }}
-          sx={{ input: { fontFamily: "Inter", fontWeight: 500, fontSize: 16 }, m: 2, width: 340 }}
+          sx={{ m: 2, width: 340 }}
           required
           type="email"
           id="email"
@@ -64,7 +64,7 @@ export function Login() {
           InputLabelProps={{
             style: { color: green["A400"], fontFamily: "Montserrat", fontSize: 16, fontWeight: 700 },
           }}
-          sx={{ input: { fontFamily: "Inter", fontWeight: 500, fontSize: 16 }, m: 2, width: 340 }}
+          sx={{ m: 2, width: 340 }}
           required
           type="password"
           id="password"
@@ -75,9 +75,14 @@ export function Login() {
         <Button type="submit" variant="contained">
           Login
         </Button>
-        <Button onClick={goToRegister} variant="contained">
-          Create Account
-        </Button>
+        <Link
+          style={{ fontFamily: "Inter", fontWeight: 700, fontSize: 18, color: green["A400"] }}
+          component={NavLink}
+          to="/register"
+          variant="contained"
+        >
+          You don't have an account,click here!
+        </Link>
       </Box>
     </Stack>
   );

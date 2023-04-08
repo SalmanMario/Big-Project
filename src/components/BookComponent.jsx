@@ -17,14 +17,11 @@ export function BookComponent({ book }) {
   return (
     <Grid sx={{ mb: 2 }} item lg={3} md={4} sm={6} xs={12}>
       <Box display="flex" justifyContent="center">
-        <Card sx={{ maxWidth: 320 }}>
+        <Card sx={{ maxWidth: 290 }}>
           <CardMedia
+            component="img"
             sx={{
-              height: 400,
-              minWidth: 320,
-              objectFit: "cover",
-              display: "block",
-              backgroundPosition: "center center",
+              height: "380px",
             }}
             className="test"
             image={book.coverImageURL}
@@ -38,7 +35,7 @@ export function BookComponent({ book }) {
               {book.author}
             </Typography>
             <Typography variant="body1">
-              {showFullText ? book.description : `${book.description.slice(0, 150)}...`}
+              {showFullText ? book.description : `${book.description.slice(0, 50)}...`}
             </Typography>
             <Box display="flex" justifyContent="center" alignItems="center" flexDirection="column">
               <Button variant="contained" onClick={handleShowFullText}>
