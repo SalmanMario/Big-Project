@@ -13,16 +13,17 @@ import { useAuthContext } from "../contexts/Auth/AuthContext";
 import { AppLayout } from "../layouts/AppLayout";
 import AuthLayout from "../layouts/AuthLayout";
 
+const ProtectedRoute = () => {
+  const { user } = useAuthContext();
+  if (!user) {
+    return <Navigate to="/" replace />;
+  }
+
+  return <Outlet />;
+};
 export function RoutesPages() {
   const navigate = useNavigate();
-  const ProtectedRoute = () => {
-    const { user } = useAuthContext();
-    if (!user) {
-      return <Navigate to="/" replace />;
-    }
 
-    return <Outlet />;
-  };
   return (
     <AuthContextProvider>
       <ThemePalette>

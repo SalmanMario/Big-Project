@@ -12,10 +12,8 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import LocalLibraryIcon from "@mui/icons-material/LocalLibrary";
-import { green } from "@mui/material/colors";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../contexts/Auth/AuthContext";
-
 export function Navbar() {
   const { logout, user } = useAuthContext();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -36,7 +34,6 @@ export function Navbar() {
     setAnchorElUser(null);
   };
 
-  // Trebuie adaugata functionalitatea de logout
   const navigate = useNavigate();
 
   const mainPage = () => {
@@ -48,7 +45,7 @@ export function Navbar() {
   };
 
   return (
-    <AppBar sx={{ bgcolor: green["A400"] }} position="static">
+    <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <LocalLibraryIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
@@ -133,6 +130,7 @@ export function Navbar() {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
+            <Button sx={{ color: "white" }}>Dark Mode</Button>
             <Tooltip title={`${user.firstName} ${user.lastName}`}>
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar>

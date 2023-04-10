@@ -1,8 +1,7 @@
-import { Box } from "@mui/system";
 import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/Footer";
 import { Outlet } from "react-router-dom";
-import { Container } from "@mui/material";
+import { Box, Container } from "@mui/material";
 export function AppLayout({ children }) {
   return (
     <Box sx={{ minHeight: "100vh", display: "flex", flexDirection: "column", flex: 1 }}>

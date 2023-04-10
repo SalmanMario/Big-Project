@@ -1,4 +1,4 @@
-import { Button, Card, CardContent, CardMedia, Grid, ThemeProvider, Typography, createTheme } from "@mui/material";
+import { Button, Card, CardContent, CardMedia, Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -23,9 +23,8 @@ export function BookComponent({ book }) {
             sx={{
               height: "380px",
             }}
-            className="test"
             image={book.coverImageURL}
-            title="book"
+            title={book.title}
           />
           <CardContent>
             <Typography textAlign="center" gutterBottom variant="h4">
