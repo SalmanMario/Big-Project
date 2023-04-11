@@ -12,6 +12,7 @@ import { AuthContextProvider } from "../contexts/Auth/AuthContextProvider";
 import { useAuthContext } from "../contexts/Auth/AuthContext";
 import { AppLayout } from "../layouts/AppLayout";
 import AuthLayout from "../layouts/AuthLayout";
+import { UserBooks } from "../pages/UserBooks";
 
 const ProtectedRoute = () => {
   const { user } = useAuthContext();
@@ -38,6 +39,7 @@ export function RoutesPages() {
             <Route path="/manageBooks/edit/:_id" element={<EditBooks />} />
             <Route path="/manageBooks" element={<ManageBooks />} />
             <Route path="/manageBooks/add" element={<AddBooks />} />
+            <Route path="/users-books/:_id" element={<UserBooks />} />
           </Route>
           <Route path="/404" element={<Error404 />} />
           <Route path="*" element={<Navigate to="/404" replace />} />

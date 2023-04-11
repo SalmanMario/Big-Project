@@ -130,7 +130,6 @@ export function Navbar() {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Button sx={{ color: "white" }}>Dark Mode</Button>
             <Tooltip title={`${user.firstName} ${user.lastName}`}>
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar>

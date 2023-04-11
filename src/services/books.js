@@ -26,3 +26,9 @@ export function getBooks() {
         headers
     });
 }
+
+export function getUsersBooks(_id) {
+    return fetchAndParse(`${baseURL}/book/user/${_id}`, {
+        headers
+    });
+}
