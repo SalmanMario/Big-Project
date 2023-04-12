@@ -1,4 +1,4 @@
-import { Box, Button, Grid, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Divider, Grid, Typography } from "@mui/material";
 import { Container } from "@mui/system";
 import moment from "moment/moment";
 import { useEffect, useState } from "react";
@@ -6,6 +6,7 @@ import { Link, NavLink, useNavigate, useParams } from "react-router-dom";
 import { AppLayout } from "../layouts/AppLayout";
 import { getBookById } from "../services/books";
 import classes from "../styles/mainpage.module.css";
+import { green } from "@mui/material/colors";
 
 export function ViewBook() {
   const navigate = useNavigate();
@@ -26,37 +27,29 @@ export function ViewBook() {
   }
 
   if (!book) {
-    return "Loading...";
+    return <CircularProgress />;
   }
-
-  function usersBooks() {
-    navigate(`/users-books/${book.owner._id}`);
-  }
-
-  console.log(book);
 
   return (
     <AppLayout>
-      <Container className={[classes.bookPage, classes.containerColor]}>
+      <Container className={[classes.bookPage]}>
         <Grid container>
-          <Grid item md={6} xs={12}>
-            <img className={classes.bookImage} height="600" src={book.coverImageURL} alt="poza" />
+          <Grid item md={5} xs={12}>
+            <img className={classes.bookImage} height="500" src={book.coverImageURL} alt="poza" />
           </Grid>
-          <Grid item md={6} xs={12}>
-            <Box sx={{ marginLeft: "2rem" }}>
-              <Typography sx={{ mb: 4 }} variant="h4">
-                {book.title}
-              </Typography>
-              <Typography sx={{ mb: 4 }} variant="h5">
-                by: {book.author}
-              </Typography>
-              <Link to={`/users-books/${book.owner._id}`} sx={{ mb: 4 }} variant="h6">
+          <Grid item md={7} xs={12}>
+            <Box sx={{ marginLeft: "1rem" }}>
+              <Typography variant="h4">{book.title}</Typography>
+              <Divider sx={{ my: 2 }} />
+              <Typography variant="h5">by: {book.author}</Typography>
+              <Divider sx={{ my: 2 }} />
+              <Link style={{ color: green["A400"] }} to={`/users-books/${book.owner._id}`} variant="h5">
                 Owner: {book.owner?.firstName} {book.owner?.lastName}
               </Link>
-              <Typography sx={{ mb: 4 }}>Created At: {convertDate(book.createdAt)}</Typography>
-              <Typography sx={{ mb: 4 }} variant="body1">
-                {book.description}
-              </Typography>
+              <Divider sx={{ my: 2 }} />
+              <Typography>Created At: {convertDate(book.createdAt)}</Typography>
+              <Divider sx={{ my: 2 }} />
+              <Typography variant="body1">{book.description}</Typography>
             </Box>
           </Grid>
         </Grid>

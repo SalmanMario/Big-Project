@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { baseURL } from "../services/books";
 import { BookPost } from "../components/BookPost";
 import { useSearchParams } from "react-router-dom";
-import { Container, Grid, InputAdornment, Pagination, TextField, Typography } from "@mui/material";
+import { CircularProgress, Container, Grid, InputAdornment, Pagination, TextField, Typography } from "@mui/material";
 import { AppLayout } from "../layouts/AppLayout";
 import SearchIcon from "@mui/icons-material/Search";
 import classes from "../styles/mainpage.module.css";
@@ -21,7 +21,7 @@ function useQueryParams({ key, initialValue, transformer, resetOn }) {
     setState(currentElement);
   }, [currentElement]);
   function handleStateChange(newValue) {
-    console.log("New value in query", newValue);
+    // console.log("New value in query", newValue);
     setState(newValue);
     // si la fiecare schimbare state, schimbam si URL-ul
     setSearchParams((query) => {
@@ -36,7 +36,6 @@ function useQueryParams({ key, initialValue, transformer, resetOn }) {
       return query;
     });
   }
-  console.log({ state });
   return [state, handleStateChange];
 }
 
@@ -55,7 +54,6 @@ export function MainPage() {
     resetOn: 1,
   });
   // const pageNumber = searchParams.get("page") ? parseInt(searchParams.get("page"), 10) : 1;
-  console.log({ pageNumber });
   // avem un state
   // si la fiecare schimbare state, schimbam si URL-ul
 
@@ -70,14 +68,16 @@ export function MainPage() {
 
     let url = `${baseURL}/book/search?limit=${limit}&offset=${offset}`;
 
+    // daca sunt pe orice pagina inafara de 1 si dau tastez in bara de search,sa sara direct pe pagina 1 / default
     if (searchQuery) {
+      setPageNumber(1);
       url += `&search=${encodeURIComponent(searchQuery)}`;
     }
 
     fetchAndParse(url)
       .then((response) => {
         setApiPostBooks(response);
-        console.log(response);
+        // console.log(response);
       })
       .catch((error) => {
         console.log(error);
@@ -87,16 +87,15 @@ export function MainPage() {
   const totalPages = Math.ceil(apiPostBooks.totalCount / 8);
 
   const handleChange = (event, value) => {
-    console.log({ newValue: value });
     setPageNumber(value);
   };
 
   return (
     <AppLayout>
-      <Box className={classes.containerColor} sx={{ px: 10 }}>
+      <Box className={classes.containerColor}>
         <Grid container>
-          <Grid sx={{ my: 2 }} item md={6}>
-            <Typography variant="h4">
+          <Grid sx={{ my: 2, alignItems: "center", display: "flex" }} item md={6}>
+            <Typography variant="h3">
               Welcome to your page {user.firstName} {user.lastName}
             </Typography>
           </Grid>

@@ -16,21 +16,38 @@ export function BookComponent({ book }) {
   };
   return (
     <Grid sx={{ mb: 2 }} item lg={3} md={4} sm={6} xs={12}>
-      <Box display="flex" justifyContent="center">
-        <Card sx={{ maxWidth: 290 }}>
+      <Box>
+        <Card>
           <CardMedia
-            component="img"
             sx={{
-              height: "380px",
+              height: 400,
             }}
             image={book.coverImageURL}
             title={book.title}
           />
-          <CardContent>
-            <Typography textAlign="center" gutterBottom variant="h4">
+          <CardContent sx={{ textAlign: "center" }}>
+            <Typography
+              sx={{
+                height: "4rem",
+                lineHeight: "2rem",
+                textOverflow: "ellipsis",
+                overflow: "hidden",
+              }}
+              gutterBottom
+              variant="h4"
+            >
               {book.title}
             </Typography>
-            <Typography textAlign="center" gutterBottom variant="h5">
+            <Typography
+              sx={{
+                height: "4rem",
+                lineHeight: "2rem",
+                textOverflow: "ellipsis",
+                overflow: "hidden",
+              }}
+              gutterBottom
+              variant="h5"
+            >
               {book.author}
             </Typography>
             <Typography variant="body1">

@@ -17,10 +17,12 @@ export const palette = {
         h4: {
             fontFamily: "Montserrat",
             fontWeight: 700,
+            fontSize: "1.5rem"
         },
         h5: {
             fontFamily: "Montserrat",
             fontWeight: 500,
+            fontSize: "1.2rem"
         },
         body1: {
             fontFamily: "Inter",
@@ -32,6 +34,7 @@ export const palette = {
         h3: {
             fontFamily: "Montserrat",
             fontWeight: 700,
+            fontSize: "1.8rem"
         },
         components: {
             MuiInput: {

@@ -24,6 +24,11 @@
   width: 50%;
 }
 
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
 /* .containerColor {
   background-color: #c8e6c9 !important;
 } */

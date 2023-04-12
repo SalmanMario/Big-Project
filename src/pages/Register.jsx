@@ -53,7 +53,7 @@ export function Register() {
   }
 
   function onSubmit(data) {
-    console.log(data);
+    // console.log(data);
     setServerError("");
     registerServices(data)
       .then((user) => {

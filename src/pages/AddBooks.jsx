@@ -43,7 +43,7 @@ export function AddBooks() {
     formData.append("description", payload.description);
     formData.append("file", payload.file);
 
-    console.log(payload);
+    // console.log(payload);
 
     try {
       await fetchAndParse(`${baseURL}/book`, {

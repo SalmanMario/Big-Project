@@ -44,7 +44,7 @@ export function EditBooks() {
   };
 
   const handleFileChange = (e) => {
-    console.log(e.target.files);
+    // console.log(e.target.files);
     if (e.target.files && e.target.files.length > 0) {
       setFile(e.target.files[0]);
     }
@@ -61,7 +61,7 @@ export function EditBooks() {
     formData.append("description", payload.description);
     formData.append("file", payload.file);
 
-    console.log(payload);
+    // console.log(payload);
 
     try {
       await fetchAndParse(`${baseURL}/book/${_id}`, {
@@ -73,7 +73,7 @@ export function EditBooks() {
       });
       navigate("/manageBooks");
     } catch (error) {
-      console.log(error, "Eu is");
+      console.log(error, "Error manage books");
     }
   }
 
@@ -144,7 +144,7 @@ export function EditBooks() {
               </Button>
               {selectedImage === file ? (
                 <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column" }}>
-                  <img style={{ width: 150, height: 120 }} src={URL.createObjectURL(selectedImage)} alt="photo" />
+                  <img style={{ width: 150, height: 220 }} src={URL.createObjectURL(selectedImage)} alt="photo" />
                   <Button variant="contained" onClick={removeSelectedImage}>
                     Remove This Image
                   </Button>

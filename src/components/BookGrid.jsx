@@ -36,7 +36,7 @@ export function BookGrid() {
   const editBook = (_id) => {
     // to get the id for every book we need to accces the params.row._id
     navigate(`/manageBooks/edit/${_id}`);
-    console.log(bookGrid);
+    // console.log(bookGrid);
   };
 
   const handleClickOpen = () => {
@@ -56,7 +56,7 @@ export function BookGrid() {
         },
       });
       if (response.status) {
-        console.log("Ok");
+        // console.log("Ok");
         setOpen(false);
       } else {
         throw new Error("Failed to delete item");
@@ -70,7 +70,7 @@ export function BookGrid() {
     {
       field: "coverImageURL",
       headerName: "Book",
-      width: 100,
+      width: 70,
       height: 100,
       renderCell: (params) => <img className="bookImagesGrid" src={params.value} />,
     },

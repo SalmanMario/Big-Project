@@ -21,10 +21,10 @@ export function UserBooks() {
   return (
     <AppLayout>
       <Box>
-        <Typography variant="h4">
+        <Typography sx={{ my: 4 }} variant="h4">
           Books Owned by {usersBooks && usersBooks.user.firstName} {usersBooks && usersBooks.user.lastName}
         </Typography>
-        <Grid container>
+        <Grid container spacing={4}>
           {usersBooks && usersBooks.books.map((books) => <BookComponent key={books.id} book={books} />)}
         </Grid>
       </Box>
