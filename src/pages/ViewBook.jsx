@@ -1,32 +1,31 @@
 import { Box, Button, CircularProgress, Divider, Grid, Typography } from "@mui/material";
 import { Container } from "@mui/system";
 import moment from "moment/moment";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, NavLink, useNavigate, useParams } from "react-router-dom";
 import { AppLayout } from "../layouts/AppLayout";
 import { getBookById } from "../services/books";
 import classes from "../styles/mainpage.module.css";
 import { green } from "@mui/material/colors";
+import { useFetchData } from "../hooks/useFetchData";
 
 export function ViewBook() {
-  const navigate = useNavigate();
   const { _id } = useParams();
-  const [book, setBook] = useState();
-  useEffect(() => {
-    getBookById(_id)
-      .then((books) => {
-        setBook(books);
-      })
-      .catch((error) => {
-        navigate("/404");
-      });
-  }, []);
+
+  const {
+    data: book,
+    loading,
+    error,
+  } = useFetchData({
+    fetcher: () => getBookById(_id),
+    initialData: [],
+  });
 
   function convertDate() {
     return moment(book.createdAt).calendar();
   }
 
-  if (!book) {
+  if (loading) {
     return <CircularProgress />;
   }
 

@@ -10,7 +10,6 @@ import { EditBooks } from "../pages/EditBooks";
 import { Error404 } from "../pages/Error404";
 import { AuthContextProvider } from "../contexts/Auth/AuthContextProvider";
 import { useAuthContext } from "../contexts/Auth/AuthContext";
-import { AppLayout } from "../layouts/AppLayout";
 import AuthLayout from "../layouts/AuthLayout";
 import { UserBooks } from "../pages/UserBooks";
 
@@ -22,6 +21,7 @@ const ProtectedRoute = () => {
 
   return <Outlet />;
 };
+
 export function RoutesPages() {
   const navigate = useNavigate();
 

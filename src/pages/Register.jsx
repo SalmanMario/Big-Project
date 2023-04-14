@@ -7,6 +7,7 @@ import { z } from "zod";
 import { registerServices } from "../services/auth";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "react-toastify";
 
 const UserRegisterSchema = z
   .object({
@@ -26,7 +27,7 @@ const UserRegisterSchema = z
     }
   });
 
-export function Register() {
+export function Register(props) {
   const [serverError, setServerError] = useState("");
   const navigate = useNavigate();
   const {
@@ -59,16 +60,13 @@ export function Register() {
       .then((user) => {
         console.log("Success", user);
         navigate("/");
+        toast.success("Account successfully created");
       })
       .catch((err) => {
         console.log("err", err);
         setServerError(err.data.message);
       });
   }
-
-  const goToLogin = () => {
-    navigate("/");
-  };
 
   return (
     <Stack

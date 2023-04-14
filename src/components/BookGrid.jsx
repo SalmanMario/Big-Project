@@ -1,8 +1,8 @@
 import { getMyBooks } from "../services/books";
-import { useFetchData } from "../hooks/useFetchData";
 import { headers } from "../services/utils";
 import {
   Button,
+  CircularProgress,
   Container,
   Dialog,
   DialogActions,
@@ -16,12 +16,21 @@ import {
 import { DataGrid } from "@mui/x-data-grid";
 import DeleteIcon from "@mui/icons-material/Delete";
 import moment from "moment";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import EditIcon from "@mui/icons-material/Edit";
+import { useFetchData } from "../hooks/useFetchData";
+import { toast } from "react-toastify";
 
 export function BookGrid() {
-  const { data: bookGrid } = useFetchData(getMyBooks, []);
+  const {
+    data: bookGrid,
+    loading,
+    error,
+  } = useFetchData({
+    fetcher: () => getMyBooks(),
+    initialData: [],
+  });
   const localStorageToken = localStorage.getItem("worldOfBooks");
   const tokenObject = JSON.parse(localStorageToken);
   const token = tokenObject.token;
@@ -47,6 +56,10 @@ export function BookGrid() {
     setOpen(false);
   };
 
+  if (loading) {
+    <CircularProgress />;
+  }
+
   const handleDetele = async (_id) => {
     try {
       const response = await fetch(`https://itschool-library.onrender.com/book/${_id}`, {
@@ -56,9 +69,11 @@ export function BookGrid() {
         },
       });
       if (response.status) {
-        // console.log("Ok");
+        console.log("Ok");
         setOpen(false);
+        toast.success("Book successfully deleted");
       } else {
+        toast("An error has ocured,please try again");
         throw new Error("Failed to delete item");
       }
     } catch (error) {

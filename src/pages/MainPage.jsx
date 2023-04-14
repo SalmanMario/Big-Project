@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { baseURL } from "../services/books";
 import { BookPost } from "../components/BookPost";
 import { useSearchParams } from "react-router-dom";
-import { CircularProgress, Container, Grid, InputAdornment, Pagination, TextField, Typography } from "@mui/material";
+import { Grid, InputAdornment, Pagination, TextField, Typography } from "@mui/material";
 import { AppLayout } from "../layouts/AppLayout";
 import SearchIcon from "@mui/icons-material/Search";
 import classes from "../styles/mainpage.module.css";

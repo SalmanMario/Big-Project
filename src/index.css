@@ -29,6 +29,7 @@ div.MuiCardContent-root {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  border-bottom: 5px solid #00e676;
 }
 
 .imgCardComponent {

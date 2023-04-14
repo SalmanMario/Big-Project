@@ -51,7 +51,7 @@ export function BookComponent({ book }) {
               {book.author}
             </Typography>
             <Typography variant="body1">
-              {showFullText ? book.description : `${book.description.slice(0, 50)}...`}
+              {showFullText ? book.description : `${book.description.slice(0, 40)}...`}
             </Typography>
             <Box display="flex" justifyContent="center" alignItems="center" flexDirection="column">
               <Button variant="contained" onClick={handleShowFullText}>

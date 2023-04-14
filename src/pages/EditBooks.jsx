@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { fetchAndParse } from "../services/utils";
 import { baseURL, getBookById } from "../services/books";
 import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export function EditBooks() {
   const [title, setTitle] = useState("");
@@ -72,6 +73,7 @@ export function EditBooks() {
         },
       });
       navigate("/manageBooks");
+      toast.success("Book successfully updated");
     } catch (error) {
       console.log(error, "Error manage books");
     }

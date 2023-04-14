@@ -5,6 +5,7 @@ import { useState } from "react";
 import { fetchAndParse } from "../services/utils";
 import { baseURL } from "../services/books";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export function AddBooks() {
   const [title, setTitle] = useState("");
@@ -54,8 +55,10 @@ export function AddBooks() {
         },
       });
       navigate("/manageBooks");
+      toast.success("Book successfully added");
     } catch (error) {
       console.log(error);
+      toast.error("Something is missing");
     }
   }
   return (
