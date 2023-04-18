@@ -76,6 +76,7 @@ export function EditBooks() {
       toast.success("Book successfully updated");
     } catch (error) {
       console.log(error, "Error manage books");
+      toast.error("Check if the inputs are filled");
     }
   }
 

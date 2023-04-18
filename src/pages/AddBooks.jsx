@@ -58,7 +58,7 @@ export function AddBooks() {
       toast.success("Book successfully added");
     } catch (error) {
       console.log(error);
-      toast.error("Something is missing");
+      toast.error("Check if the inputs are filled");
     }
   }
   return (

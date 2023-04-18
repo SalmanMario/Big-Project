@@ -79,7 +79,7 @@ export function BookGrid() {
         refetch();
       } else {
         toast("An error has ocured,please try again");
-        throw new Error("Failed to delete item");
+        throw new Error("Failed to delete the book");
       }
     } catch (error) {
       console.log(error);
@@ -130,6 +130,14 @@ export function BookGrid() {
           </IconButton>
           <Dialog
             open={open}
+            BackdropProps={{ style: { backgroundColor: "rgba(255,255,255, 0.05)" } }}
+            PaperProps={{
+              style: {
+                backgroundColor: "white",
+                boxShadow: "none",
+                border: "3px solid #00e676",
+              },
+            }}
             onClose={handleClose}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
