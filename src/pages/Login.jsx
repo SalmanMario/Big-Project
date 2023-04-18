@@ -1,6 +1,7 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { green } from "@mui/material/colors";
+import classes from "./login.module.css";
 import { Stack } from "@mui/system";
 import { useAuthContext } from "../contexts/Auth/AuthContext";
 import { useForm } from "../hooks/useForm";
@@ -23,6 +24,7 @@ export function Login() {
       })
       .catch((error) => {
         console.log(error);
+        toast.error(`Invalid email or password`);
       });
   }
 
