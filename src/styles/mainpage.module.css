@@ -1,5 +1,4 @@
 .bookPage {
-  /* background-color: #c8e6c9; */
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -28,10 +27,6 @@ a {
   text-decoration: none;
   color: inherit;
 }
-
-/* .containerColor {
-  background-color: #c8e6c9 !important;
-} */
 
 @media only screen and (max-width: 900px) {
   .bookPage {

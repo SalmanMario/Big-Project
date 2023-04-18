@@ -1,8 +1,7 @@
-import { Box, Button, CircularProgress, Divider, Grid, Typography } from "@mui/material";
+import { Box, CircularProgress, Divider, Grid, Typography } from "@mui/material";
 import { Container } from "@mui/system";
 import moment from "moment/moment";
-import { useContext, useEffect, useState } from "react";
-import { Link, NavLink, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { AppLayout } from "../layouts/AppLayout";
 import { getBookById } from "../services/books";
 import classes from "../styles/mainpage.module.css";

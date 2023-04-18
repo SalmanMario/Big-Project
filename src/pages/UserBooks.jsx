@@ -1,10 +1,8 @@
-import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getUsersBooks } from "../services/books";
 import { Box, CircularProgress, Grid, Typography } from "@mui/material";
 import { BookComponent } from "../components/BookComponent";
 import { AppLayout } from "../layouts/AppLayout";
-import { useAuthContext } from "../contexts/Auth/AuthContext";
 import { useFetchData } from "../hooks/useFetchData";
 
 export function UserBooks() {
