@@ -1,6 +1,6 @@
 import { getMyBooks } from "../services/books";
-import { headers } from "../services/utils";
 import {
+  Box,
   Button,
   CircularProgress,
   Container,
@@ -16,7 +16,7 @@ import {
 import { DataGrid } from "@mui/x-data-grid";
 import DeleteIcon from "@mui/icons-material/Delete";
 import moment from "moment";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import EditIcon from "@mui/icons-material/Edit";
 import { useFetchData } from "../hooks/useFetchData";
@@ -26,6 +26,7 @@ export function BookGrid() {
   const {
     data: bookGrid,
     loading,
+    refetch,
     error,
   } = useFetchData({
     fetcher: () => getMyBooks(),
@@ -35,6 +36,7 @@ export function BookGrid() {
   const tokenObject = JSON.parse(localStorageToken);
   const token = tokenObject.token;
   const [open, setOpen] = useState(false);
+  const [books, setBooks] = useState([]);
 
   const navigate = useNavigate();
 
@@ -72,6 +74,9 @@ export function BookGrid() {
         console.log("Ok");
         setOpen(false);
         toast.success("Book successfully deleted");
+        const updatedBooks = books.filter((book) => book._id !== _id);
+        setBooks(updatedBooks);
+        refetch();
       } else {
         toast("An error has ocured,please try again");
         throw new Error("Failed to delete item");
@@ -119,7 +124,7 @@ export function BookGrid() {
       headerName: "Actions",
       width: 105,
       renderCell: (params) => (
-        <div>
+        <Box>
           <IconButton onClick={handleClickOpen} aria-label="delete" size="large">
             <DeleteIcon fontSize="inherit" />
           </IconButton>
@@ -147,7 +152,7 @@ export function BookGrid() {
           <IconButton onClick={() => editBook(params.row._id)} aria-label="delete" size="large">
             <EditIcon fontSize="inherit" />
           </IconButton>
-        </div>
+        </Box>
       ),
     },
   ]);
@@ -155,26 +160,26 @@ export function BookGrid() {
   // onClick={() => handleDetele(params.row._id)}
 
   return (
-    <Container>
+    <Container sx={{ display: "flex", flexDirection: "column" }}>
       <Grid container>
         <Grid item md={10}>
           <Typography sx={{ my: 4 }} variant="h3">
             Welcome to your Manage Books page
           </Typography>
         </Grid>
-        <Grid sx={{ display: "flex", justifyContent: "center", alignItems: "center" }} item md={2}>
+        <Grid sx={{ flexGrow: 1, display: "flex", justifyContent: "center", alignItems: "center" }} item md={2}>
           <Button onClick={addBook} variant="contained">
             Add Book
           </Button>
         </Grid>
       </Grid>
-      <div style={{ height: 400, width: "100%" }}>
+      <Box style={{ width: "100%" }}>
         {bookGrid.length === 0 ? (
           "You have no books added"
         ) : (
-          <DataGrid autoHeight getRowHeight={() => 90} rows={bookGrid} columns={columns} />
+          <DataGrid sx={{ mb: 4 }} autoHeight getRowHeight={() => 90} rows={bookGrid} columns={columns} />
         )}
-      </div>
+      </Box>
     </Container>
   );
 }
