@@ -1,4 +1,13 @@
-import { Alert, Box, Button, Container, Grid, TextField, Typography } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Button,
+  CircularProgress,
+  Container,
+  Grid,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { AppLayout } from "../layouts/AppLayout";
 import { green } from "@mui/material/colors";
 import { useEffect, useState } from "react";
@@ -11,26 +20,41 @@ import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { editBook } from "../services/books";
 import { useCallback } from "react";
+import { useFetchData } from "../hooks/useFetchData";
 
 const MAX_FILE_SIZE = 500000;
-const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
+const ACCEPTED_IMAGE_TYPES = [
+  "image/jpeg",
+  "image/jpg",
+  "image/png",
+  "image/webp",
+];
 
 const editSchemaBook = z.object({
   title: z.string().min(2, "Title is required"),
   author: z.string().min(2, "Author is required"),
   description: z.string().min(2, "Description is required"),
-  file: z
-    .any()
-    .refine((file) => file !== null, "Image is required.")
-    .refine((file) => file?.size <= MAX_FILE_SIZE, `Max file size is 5MB.`)
-    .refine((file) => ACCEPTED_IMAGE_TYPES.includes(file?.type), ".jpg, .jpeg, .png and .webp files are accepted."),
+  // dupa cum am zis si la structura, vom avea uniune intre string si File. Putem definii tipul asta de date folosind z.union
+  file: z.union([
+    // si avem uniune intre string
+    z.string(),
+    // si File
+    z
+      .any()
+      .refine((file) => file !== null, "Image is required.")
+      .refine((file) => file?.size <= MAX_FILE_SIZE, `Max file size is 5MB.`)
+      .refine(
+        (file) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
+        ".jpg, .jpeg, .png and .webp files are accepted."
+      ),
+  ]),
 });
 
 export function EditBooks() {
   const { _id } = useParams(); // extract id from the URL
   const [serverError, setServerError] = useState("");
-  const [loading, setLoading] = useState(true); // set loading to true initially
-  const [fileUrl, setFileUrl] = useState(null);
+  const [loading, setLoading] = useState(false); // set loading to true initially
+  // nu e nevoie de un state nou pentru fisier, foloseste useForm pentru a controla toate valorile :)
   const navigate = useNavigate();
   const {
     register,
@@ -39,6 +63,16 @@ export function EditBooks() {
     formState: { errors },
     reset,
   } = useForm({
+    /**
+     * daca la defaultValues asa arata obiectul, va trebui sa respectam structura
+     * Deci un book in formularul de editare va avea urmatoare structura
+     *  - title: string
+     *  - author: string
+     *  - description: string
+     *  - file: null | string | File
+     *  Un fisier este o uniune intre mai multe tipuri, semnalat de operatia | . Cat timp nu avem date, imaginea nu exista deci tipul de date este null
+     *  Daca vine un raspuns de la server, imaginea va fi un string (dat din book.coverImageURL)
+     */
     defaultValues: {
       title: "",
       author: "",
@@ -48,23 +82,26 @@ export function EditBooks() {
     resolver: zodResolver(editSchemaBook),
   });
 
-  const fetchBook = useCallback(async () => {
-    try {
-      const book = await getBookById(_id);
-      reset(book);
-      if (book) {
-        setFileUrl(book.coverImageURL);
-      }
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  }, [reset, _id]);
+  // vom folosi hook-ul deja definit pentru a incarca datele intr-un state. In momentul in care acel state exista va da trigger la un effect care va reseta formularul
+  const { data: book, loading: bookLoading } = useFetchData(
+    {
+      fetcher: () => getBookById(_id),
+    },
+    [_id]
+  );
 
   useEffect(() => {
-    fetchBook();
-  }, [fetchBook]);
+    if (book) {
+      // nu ar trebui sa resetam formularul cu date venite de pe server direct, poate nu sunt in formatul nostru definit mai sus
+      // setam camp cu camp valorile, pentru a ne asigura ca respectam structura de date a formularului
+      reset({
+        file: book.coverImageURL,
+        author: book.author,
+        description: book.description,
+        title: book.title,
+      });
+    }
+  }, [book]);
 
   function displayErrors(key) {
     const error = errors[key];
@@ -81,7 +118,7 @@ export function EditBooks() {
     editBook(_id, data)
       .then((book) => {
         console.log("Success", book);
-        setFileUrl(book.coverImageURL);
+        // daca navigam, nu e nevoie sa setam o stare in plus. Poate cauza un memory leak pentru ca nu este mounted componenta
         navigate("/manageBooks");
         toast.success("Book successfully added");
       })
@@ -95,6 +132,24 @@ export function EditBooks() {
       });
   }
 
+  function renderImageURL(selectedImage) {
+    // avand in vedere ca selectedImage este fie un string, fie un File verificare este simpla
+    // verificam daca e string
+    if (typeof selectedImage === "string") {
+      // daca e string, inseamna ca este URL-ul original
+      return selectedImage;
+    }
+    // altfel, este un file si construim URL-ul folosind URL.createObjectURL
+    return URL.createObjectURL(selectedImage);
+  }
+
+  console.log({book});
+
+  // cat timp se incarca cartea, aratam un loader sa nu fie un formular
+  if (bookLoading) {
+    return <CircularProgress />;
+  }
+
   return (
     <AppLayout>
       <Container>
@@ -104,16 +159,30 @@ export function EditBooks() {
           </Typography>
           <Grid container>
             <Grid
-              sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
               item
               md={6}
               xs={12}
             >
               <TextField
                 InputLabelProps={{
-                  style: { color: green["A400"], fontFamily: "Montserrat", fontSize: 16, fontWeight: 700 },
+                  style: {
+                    color: green["A400"],
+                    fontFamily: "Montserrat",
+                    fontSize: 16,
+                    fontWeight: 700,
+                  },
                 }}
-                sx={{ input: { fontFamily: "Inter", fontWeight: 500, fontSize: 16 }, m: 2, width: "100%" }}
+                sx={{
+                  input: { fontFamily: "Inter", fontWeight: 500, fontSize: 16 },
+                  m: 2,
+                  width: "100%",
+                }}
                 required
                 type="text"
                 id="title"
@@ -126,9 +195,18 @@ export function EditBooks() {
               ></TextField>
               <TextField
                 InputLabelProps={{
-                  style: { color: green["A400"], fontFamily: "Montserrat", fontSize: 16, fontWeight: 700 },
+                  style: {
+                    color: green["A400"],
+                    fontFamily: "Montserrat",
+                    fontSize: 16,
+                    fontWeight: 700,
+                  },
                 }}
-                sx={{ input: { fontFamily: "Inter", fontWeight: 500, fontSize: 16 }, m: 2, width: "100%" }}
+                sx={{
+                  input: { fontFamily: "Inter", fontWeight: 500, fontSize: 16 },
+                  m: 2,
+                  width: "100%",
+                }}
                 required
                 type="text"
                 id="author"
@@ -141,9 +219,18 @@ export function EditBooks() {
               ></TextField>
               <TextField
                 InputLabelProps={{
-                  style: { color: green["A400"], fontFamily: "Montserrat", fontSize: 16, fontWeight: 700 },
+                  style: {
+                    color: green["A400"],
+                    fontFamily: "Montserrat",
+                    fontSize: 16,
+                    fontWeight: 700,
+                  },
                 }}
-                sx={{ input: { fontFamily: "Inter", fontWeight: 500, fontSize: 16 }, m: 2, width: "100%" }}
+                sx={{
+                  input: { fontFamily: "Inter", fontWeight: 500, fontSize: 16 },
+                  m: 2,
+                  width: "100%",
+                }}
                 required
                 type="text"
                 id="author"
@@ -164,14 +251,57 @@ export function EditBooks() {
               <Controller
                 control={control}
                 name="file"
-                render={({ field: { onChange, value: selectedImage }, fieldState: { error } }) => (
+                render={({
+                  field: { onChange, value: selectedImage },
+                  fieldState: { error },
+                }) => (
                   <Box
-                    sx={{ display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column" }}
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      flexDirection: "column",
+                    }}
                   >
                     {error && <Box>{error.message}</Box>}
-                    {!selectedImage && (
+                    {selectedImage && (
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          flexDirection: "column",
+                        }}
+                      >
+                        <img
+                          style={{ width: 120, height: 180 }}
+                          // trebuie sa ne punem intrebarea "Care va fi sursa imaginii? Avand in vedere ca este o uniune intre mai multe tipuri de date"
+                          // prin verificare de mai sus, am redus uniunea campului `file` la File | string. Astfel, vom face fix verificarea asta pentru randare.
+                          src={renderImageURL(selectedImage)}
+                          alt="photo"
+                        />
+                        {serverError && (
+                          <Alert sx={{ my: 2 }} severity="error">
+                            {serverError}
+                          </Alert>
+                        )}
+                      </Box>
+                    )}
+                    {selectedImage !== book.coverImageURL ? (
+                      <Button
+                        variant="contained"
+                        onClick={() => {
+                          // la edit, oare vrem sa stergem poza? Ar fi ciudat sa il las pe utilziator sa stearga poza deja pusa si dupa sa nu il las sa trimita formularul
+                          // am putea da revert la valoarea initiala
+                          onChange(book.coverImageURL);
+                          console.log("remove");
+                        }}
+                      >
+                        Revert to the original
+                      </Button>
+                    ) : (
                       <Button component="label" variant="contained">
-                        Upload Book Image
+                        Change book image
                         <input
                           accept="image/*"
                           type="file"
@@ -185,32 +315,6 @@ export function EditBooks() {
                           }}
                         />
                       </Button>
-                    )}
-                    {selectedImage && (
-                      <Box
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          flexDirection: "column",
-                        }}
-                      >
-                        <img style={{ width: 120, height: 180 }} src={URL.createObjectURL(selectedImage)} alt="photo" />
-                        <Button
-                          variant="contained"
-                          onClick={() => {
-                            onChange(null);
-                            console.log("remove");
-                          }}
-                        >
-                          Remove This Image
-                        </Button>
-                        {serverError && (
-                          <Alert sx={{ my: 2 }} severity="error">
-                            {serverError}
-                          </Alert>
-                        )}
-                      </Box>
                     )}
                   </Box>
                 )}
