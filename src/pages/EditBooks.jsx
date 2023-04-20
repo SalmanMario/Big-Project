@@ -1,4 +1,4 @@
-import { Box, Button, Container, FormLabel, Grid, TextField, Typography } from "@mui/material";
+import { Alert, Box, Button, Container, Grid, TextField, Typography } from "@mui/material";
 import { AppLayout } from "../layouts/AppLayout";
 import { green } from "@mui/material/colors";
 import { useEffect, useState } from "react";
@@ -6,163 +6,218 @@ import { fetchAndParse } from "../services/utils";
 import { baseURL, getBookById } from "../services/books";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import { z } from "zod";
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { editBook } from "../services/books";
+import { useCallback } from "react";
+
+const MAX_FILE_SIZE = 500000;
+const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
+
+const editSchemaBook = z.object({
+  title: z.string().min(2, "Title is required"),
+  author: z.string().min(2, "Author is required"),
+  description: z.string().min(2, "Description is required"),
+  file: z
+    .any()
+    .refine((file) => file !== null, "Image is required.")
+    .refine((file) => file?.size <= MAX_FILE_SIZE, `Max file size is 5MB.`)
+    .refine((file) => ACCEPTED_IMAGE_TYPES.includes(file?.type), ".jpg, .jpeg, .png and .webp files are accepted."),
+});
 
 export function EditBooks() {
-  const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
-  const [description, setDescription] = useState("");
-  const [file, setFile] = useState(null);
+  const { _id } = useParams(); // extract id from the URL
+  const [serverError, setServerError] = useState("");
+  const [loading, setLoading] = useState(true); // set loading to true initially
+  const [fileUrl, setFileUrl] = useState(null);
+  const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+    reset,
+  } = useForm({
+    defaultValues: {
+      title: "",
+      author: "",
+      description: "",
+      file: null,
+    },
+    resolver: zodResolver(editSchemaBook),
+  });
 
-  const [selectedImage, setSelectedImage] = useState("");
-
-  const { _id } = useParams();
+  const fetchBook = useCallback(async () => {
+    try {
+      const book = await getBookById(_id);
+      reset(book);
+      if (book) {
+        setFileUrl(book.coverImageURL);
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  }, [reset, _id]);
 
   useEffect(() => {
-    if (_id) {
-      getBookById(_id)
-        .then((book) => {
-          setTitle(book.title);
-          setAuthor(book.author);
-          setDescription(book.description);
-          setSelectedImage(book.coverImageURL);
-        })
-        .catch((error) => {
-          navigate("/404");
-        });
-    }
-  }, [_id]);
+    fetchBook();
+  }, [fetchBook]);
 
-  const imageChange = (e) => {
-    if (e.target.files && e.target.files.length > 0) {
-      setSelectedImage(e.target.files[0]);
-    }
-  };
+  function displayErrors(key) {
+    const error = errors[key];
+    return {
+      error: Boolean(error),
+      helperText: error && error.message,
+    };
+  }
 
-  const navigate = useNavigate();
-
-  const removeSelectedImage = () => {
-    setSelectedImage();
-  };
-
-  const handleFileChange = (e) => {
-    // console.log(e.target.files);
-    if (e.target.files && e.target.files.length > 0) {
-      setFile(e.target.files[0]);
-    }
-  };
-
-  async function editBook(payload) {
-    const formData = new FormData();
-    const localStorageToken = localStorage.getItem("worldOfBooks");
-    const tokenObject = JSON.parse(localStorageToken);
-    const token = tokenObject.token;
-
-    formData.append("title", payload.title);
-    formData.append("author", payload.author);
-    formData.append("description", payload.description);
-    formData.append("file", payload.file);
-
-    // console.log(payload);
-
-    try {
-      await fetchAndParse(`${baseURL}/book/${_id}`, {
-        method: "PUT",
-        body: formData,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+  function onSubmit(data) {
+    console.log("Submitting", data);
+    setServerError("");
+    setLoading(true);
+    editBook(_id, data)
+      .then((book) => {
+        console.log("Success", book);
+        setFileUrl(book.coverImageURL);
+        navigate("/manageBooks");
+        toast.success("Book successfully added");
+      })
+      .catch((err) => {
+        console.log("err", err);
+        setServerError(err.data.message);
+        console.log(data);
+      })
+      .finally(() => {
+        setLoading(false);
       });
-      navigate("/manageBooks");
-      toast.success("Book successfully updated");
-    } catch (error) {
-      console.log(error, "Error manage books");
-      toast.error("Check if the inputs are filled");
-    }
   }
 
   return (
     <AppLayout>
       <Container>
-        <Typography sx={{ my: 4 }} variant="h4">
-          Edit a book
-        </Typography>
-        <Grid container>
-          <Grid sx={{ display: "flex", flexDirection: "column", alignItems: "baseline" }} item md={6} xs={12}>
-            <TextField
-              InputLabelProps={{
-                style: { color: green["A400"], fontFamily: "Montserrat", fontSize: 16, fontWeight: 700 },
-              }}
-              sx={{ input: { fontFamily: "Inter", fontWeight: 500, fontSize: 16 }, m: 2, width: "100%" }}
-              required
-              type="text"
-              id="title"
-              variant="outlined"
-              label="Title"
-              placeholder="Title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            ></TextField>
-            <TextField
-              InputLabelProps={{
-                style: { color: green["A400"], fontFamily: "Montserrat", fontSize: 16, fontWeight: 700 },
-              }}
-              sx={{ input: { fontFamily: "Inter", fontWeight: 500, fontSize: 16 }, m: 2, width: "100%" }}
-              required
-              type="text"
-              id="author"
-              variant="outlined"
-              label="Author"
-              value={author}
-              placeholder="Author"
-              onChange={(e) => setAuthor(e.target.value)}
-            ></TextField>
-            <TextField
-              InputLabelProps={{
-                style: { color: green["A400"], fontFamily: "Montserrat", fontSize: 16, fontWeight: 700 },
-              }}
-              sx={{ input: { fontFamily: "Inter", fontWeight: 500, fontSize: 16 }, m: 2, width: "100%" }}
-              required
-              type="text"
-              id="author"
-              multiline
-              rows={5}
-              variant="outlined"
-              label="Description"
-              placeholder="Description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-            ></TextField>
-            <Button onClick={() => editBook({ title, author, description, file })} variant="contained">
-              Edit The book
-            </Button>
-          </Grid>
-          <Grid item md={6} xs={12}>
-            <Box
-              sx={{ display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column" }}
-              onChange={handleFileChange}
+        <form noValidate onSubmit={handleSubmit(onSubmit)}>
+          <Typography sx={{ my: 4 }} variant="h4">
+            Add a book
+          </Typography>
+          <Grid container>
+            <Grid
+              sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}
+              item
+              md={6}
+              xs={12}
             >
-              <Button component="label" variant="contained">
-                Upload Book Image
-                <input id="file-upload" required accept="image/*" type="file" onChange={imageChange} />
+              <TextField
+                InputLabelProps={{
+                  style: { color: green["A400"], fontFamily: "Montserrat", fontSize: 16, fontWeight: 700 },
+                }}
+                sx={{ input: { fontFamily: "Inter", fontWeight: 500, fontSize: 16 }, m: 2, width: "100%" }}
+                required
+                type="text"
+                id="title"
+                variant="outlined"
+                label="Title"
+                placeholder="Title"
+                {...register("title")}
+                {...displayErrors("title")}
+                focused
+              ></TextField>
+              <TextField
+                InputLabelProps={{
+                  style: { color: green["A400"], fontFamily: "Montserrat", fontSize: 16, fontWeight: 700 },
+                }}
+                sx={{ input: { fontFamily: "Inter", fontWeight: 500, fontSize: 16 }, m: 2, width: "100%" }}
+                required
+                type="text"
+                id="author"
+                variant="outlined"
+                label="Author"
+                focused
+                placeholder="Author"
+                {...register("author")}
+                {...displayErrors("author")}
+              ></TextField>
+              <TextField
+                InputLabelProps={{
+                  style: { color: green["A400"], fontFamily: "Montserrat", fontSize: 16, fontWeight: 700 },
+                }}
+                sx={{ input: { fontFamily: "Inter", fontWeight: 500, fontSize: 16 }, m: 2, width: "100%" }}
+                required
+                type="text"
+                id="author"
+                multiline
+                rows={5}
+                focused
+                variant="outlined"
+                label="Description"
+                placeholder="Description"
+                {...register("description")}
+                {...displayErrors("description")}
+              ></TextField>
+              <Button type="submit" disabled={loading} variant="contained">
+                Add Book
               </Button>
-              {selectedImage === file ? (
-                <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column" }}>
-                  <img style={{ width: 150, height: 220 }} src={URL.createObjectURL(selectedImage)} alt="photo" />
-                  <Button variant="contained" onClick={removeSelectedImage}>
-                    Remove This Image
-                  </Button>
-                </Box>
-              ) : (
-                <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column" }}>
-                  <img style={{ width: 120, height: 180 }} src={selectedImage} alt="photo" />
-                  <Button variant="contained" onClick={removeSelectedImage}>
-                    Remove This Image
-                  </Button>
-                </Box>
-              )}
-            </Box>
+            </Grid>
+            <Grid item md={6} xs={12}>
+              <Controller
+                control={control}
+                name="file"
+                render={({ field: { onChange, value: selectedImage }, fieldState: { error } }) => (
+                  <Box
+                    sx={{ display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column" }}
+                  >
+                    {error && <Box>{error.message}</Box>}
+                    {!selectedImage && (
+                      <Button component="label" variant="contained">
+                        Upload Book Image
+                        <input
+                          accept="image/*"
+                          type="file"
+                          hidden
+                          onChange={(e) => {
+                            console.log("Change");
+                            if (e.target.files && e.target.files.length > 0) {
+                              console.log(e.target.files[0]);
+                              onChange(e.target.files[0]);
+                            }
+                          }}
+                        />
+                      </Button>
+                    )}
+                    {selectedImage && (
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          flexDirection: "column",
+                        }}
+                      >
+                        <img style={{ width: 120, height: 180 }} src={URL.createObjectURL(selectedImage)} alt="photo" />
+                        <Button
+                          variant="contained"
+                          onClick={() => {
+                            onChange(null);
+                            console.log("remove");
+                          }}
+                        >
+                          Remove This Image
+                        </Button>
+                        {serverError && (
+                          <Alert sx={{ my: 2 }} severity="error">
+                            {serverError}
+                          </Alert>
+                        )}
+                      </Box>
+                    )}
+                  </Box>
+                )}
+              />
+            </Grid>
           </Grid>
-        </Grid>
+        </form>
       </Container>
     </AppLayout>
   );
