@@ -51,7 +51,11 @@ export function editBook(_id, data) {
     formData.append("title", data.title);
     formData.append("author", data.author);
     formData.append("description", data.description);
-    formData.append("file", data.file);
+    if (data.file instanceof File) {
+        // ar trebui sa incercam sa dam update la fisier, numa daca tipul de date este File
+        // sa nu uitam ca `data.file` este uniune intre string si File
+        formData.append("file", data.file);
+    }
 
     console.log("Ceva data", data);
 
