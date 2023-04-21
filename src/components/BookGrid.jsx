@@ -21,6 +21,7 @@ import { useNavigate } from "react-router-dom";
 import EditIcon from "@mui/icons-material/Edit";
 import { useFetchData } from "../hooks/useFetchData";
 import { toast } from "react-toastify";
+import classes from "../styles/mainpage.module.css";
 
 export function BookGrid() {
   const {
@@ -32,6 +33,7 @@ export function BookGrid() {
     fetcher: () => getMyBooks(),
     initialData: [],
   });
+
   const localStorageToken = localStorage.getItem("worldOfBooks");
   const tokenObject = JSON.parse(localStorageToken);
   const token = tokenObject.token;
@@ -58,10 +60,6 @@ export function BookGrid() {
     setOpen(false);
   };
 
-  if (loading) {
-    <CircularProgress />;
-  }
-
   const handleDetele = async (_id) => {
     try {
       const response = await fetch(`https://itschool-library.onrender.com/book/${_id}`, {
@@ -71,7 +69,7 @@ export function BookGrid() {
         },
       });
       if (response.status) {
-        console.log("Ok");
+        // console.log("Ok");
         setOpen(false);
         toast.success("Book successfully deleted");
         const updatedBooks = books.filter((book) => book._id !== _id);
@@ -82,7 +80,7 @@ export function BookGrid() {
         throw new Error("Failed to delete the book");
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -165,13 +163,17 @@ export function BookGrid() {
     },
   ]);
 
+  if (loading) {
+    return <CircularProgress />;
+  }
+
   // onClick={() => handleDetele(params.row._id)}
 
   return (
     <Container sx={{ display: "flex", flexDirection: "column" }}>
       <Grid container>
         <Grid item md={10}>
-          <Typography sx={{ my: 4 }} variant="h3">
+          <Typography className={classes.welcomeTitle} sx={{ my: 4 }} variant="h3">
             Welcome to your Manage Books page
           </Typography>
         </Grid>
@@ -183,7 +185,7 @@ export function BookGrid() {
       </Grid>
       <Box style={{ width: "100%" }}>
         {bookGrid.length === 0 ? (
-          "You have no books added"
+          "You don't own any books,click on the button 'ADD BOOK' to add your favorites books"
         ) : (
           <DataGrid sx={{ mb: 4 }} autoHeight getRowHeight={() => 90} rows={bookGrid} columns={columns} />
         )}

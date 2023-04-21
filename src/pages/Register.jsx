@@ -27,7 +27,7 @@ const UserRegisterSchema = z
     }
   });
 
-export function Register(props) {
+export function Register() {
   const [serverError, setServerError] = useState("");
   const navigate = useNavigate();
   const {
@@ -58,12 +58,12 @@ export function Register(props) {
     setServerError("");
     registerServices(data)
       .then((user) => {
-        console.log("Success", user);
+        // console.log("Success", user);
         navigate("/");
         toast.success("Account successfully created");
       })
       .catch((err) => {
-        console.log("err", err);
+        // console.log("err", err);
         setServerError(err.data.message);
       });
   }
@@ -76,7 +76,7 @@ export function Register(props) {
       alignItems="center"
       flexDirection="column"
     >
-      <Typography sx={{ fontFamily: "Montserrat", fontWeight: 700, color: green["A400"] }} variant="h3">
+      <Typography sx={{ fontFamily: "Montserrat", fontWeight: 700, color: green["A400"] }} variant="h2">
         Register
       </Typography>
       <Box

@@ -2,8 +2,6 @@ import { Alert, Box, Button, Container, Grid, TextField, Typography } from "@mui
 import { AppLayout } from "../layouts/AppLayout";
 import { green } from "@mui/material/colors";
 import { useState } from "react";
-import { fetchAndParse } from "../services/utils";
-import { baseURL } from "../services/books";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { z } from "zod";
@@ -26,7 +24,6 @@ const AddSchemaBook = z.object({
 });
 
 export function AddBooks() {
-  const [serverError, setServerError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const {
@@ -53,19 +50,17 @@ export function AddBooks() {
   }
 
   function onSubmit(data) {
-    console.log("Submitting", data);
-    setServerError("");
+    // console.log("Submitting", data);
     setLoading(true);
     addBook(data)
       .then((book) => {
-        console.log("Success", book);
+        // console.log("Success", book);
         navigate("/manageBooks");
         toast.success("Book successfully added");
       })
       .catch((err) => {
-        console.log("err", err);
-        setServerError(err.data.message);
-        console.log(data);
+        // console.log("err", err);
+        // console.log(data);
       })
       .finally(() => {
         setLoading(false);
@@ -151,9 +146,9 @@ export function AddBooks() {
                           type="file"
                           hidden
                           onChange={(e) => {
-                            console.log("Change");
+                            // console.log("Change");
                             if (e.target.files && e.target.files.length > 0) {
-                              console.log(e.target.files[0]);
+                              // console.log(e.target.files[0]);
                               onChange(e.target.files[0]);
                             }
                           }}
@@ -174,7 +169,7 @@ export function AddBooks() {
                           variant="contained"
                           onClick={() => {
                             onChange(null);
-                            console.log("remove");
+                            // console.log("remove");
                           }}
                         >
                           Remove This Image

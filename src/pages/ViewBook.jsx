@@ -1,7 +1,7 @@
 import { Box, CircularProgress, Divider, Grid, Typography } from "@mui/material";
 import { Container } from "@mui/system";
 import moment from "moment/moment";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { AppLayout } from "../layouts/AppLayout";
 import { getBookById } from "../services/books";
 import classes from "../styles/mainpage.module.css";
@@ -10,6 +10,8 @@ import { useFetchData } from "../hooks/useFetchData";
 
 export function ViewBook() {
   const { _id } = useParams();
+
+  const navigate = useNavigate();
 
   const {
     data: book,
@@ -26,6 +28,10 @@ export function ViewBook() {
 
   if (loading) {
     return <CircularProgress />;
+  }
+
+  if (error) {
+    navigate("/404");
   }
 
   return (

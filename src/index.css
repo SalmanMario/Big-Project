@@ -12,9 +12,8 @@ input:-webkit-autofill:active {
 }
 
 .MuiFormHelperText-root.Mui-error {
-  margin: 0;
   text-align: center;
-  background-color: #e8f5e9;
+  background-color: #fff;
   font-size: 1rem;
 }
 

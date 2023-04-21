@@ -3,28 +3,53 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import { green } from "@mui/material/colors";
 import classes from "./login.module.css";
 import { Stack } from "@mui/system";
-import { useAuthContext } from "../contexts/Auth/AuthContext";
-import { useForm } from "../hooks/useForm";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { loginServices } from "../services/auth";
 import { toast } from "react-toastify";
+import { useAuthContext } from "../contexts/Auth/AuthContext";
+
+const LoginObjectSchema = z.object({
+  email: z.string().min(8, "Email is required").email("Invalid Email"),
+  password: z.string().min(4, "Password is required"),
+});
 
 export function Login() {
-  const { user, login } = useAuthContext();
   const navigate = useNavigate();
-  const { formValues, registerField } = useForm({
-    email: "",
-    password: "",
+  const { user, login } = useAuthContext();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+    resolver: zodResolver(LoginObjectSchema),
   });
 
-  function onSubmit(event) {
-    event.preventDefault();
-    login(formValues)
+  function displayErrors(key) {
+    const error = errors[key];
+    return {
+      error: Boolean(error),
+      helperText: error && error.message,
+    };
+  }
+
+  function onSubmit(data) {
+    // console.log(data);
+    login(data)
       .then(() => {
+        // console.log("Success", data);
         navigate("/mainpage");
-        toast.info(`Welcome to the main page`);
+        toast.info("Welcome to the main page");
       })
-      .catch((error) => {
-        console.log(error);
-        toast.error(`Invalid email or password`);
+      .catch((err) => {
+        // console.log("err", err);
+        toast.error("Invalid email or password");
       });
   }
 
@@ -36,16 +61,16 @@ export function Login() {
       alignItems="center"
       flexDirection="column"
     >
-      <Typography sx={{ color: green["A400"] }} variant="h3">
+      <Typography sx={{ color: green["A400"] }} variant="h2">
         Login
       </Typography>
       <Box
         sx={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column" }}
         component="form"
-        onSubmit={onSubmit}
+        onSubmit={handleSubmit(onSubmit)}
+        noValidate
       >
         <TextField
-          {...registerField("email")}
           InputLabelProps={{
             style: { color: green["A400"], fontFamily: "Montserrat", fontSize: 16, fontWeight: 700 },
           }}
@@ -55,9 +80,10 @@ export function Login() {
           id="email"
           label="Email"
           variant="outlined"
+          {...register("email")}
+          {...displayErrors("email")}
         />
         <TextField
-          {...registerField("password")}
           InputLabelProps={{
             style: { color: green["A400"], fontFamily: "Montserrat", fontSize: 16, fontWeight: 700 },
           }}
@@ -67,6 +93,8 @@ export function Login() {
           id="password"
           label="Password"
           variant="outlined"
+          {...register("password")}
+          {...displayErrors("password")}
         />
         <Button type="submit" variant="contained">
           Login
@@ -77,7 +105,7 @@ export function Login() {
           to="/register"
           variant="contained"
         >
-          You don't have an account,click here!
+          You don't have an account? Click here!
         </Link>
       </Box>
     </Stack>

@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getUsersBooks } from "../services/books";
 import { Box, CircularProgress, Grid, Typography } from "@mui/material";
 import { BookComponent } from "../components/BookComponent";
@@ -7,6 +7,7 @@ import { useFetchData } from "../hooks/useFetchData";
 
 export function UserBooks() {
   const { _id } = useParams();
+  const navigate = useNavigate("");
 
   const {
     data: usersBooks,
@@ -21,7 +22,11 @@ export function UserBooks() {
     return <CircularProgress />;
   }
 
-  console.log(usersBooks);
+  if (error) {
+    navigate("/404");
+  }
+
+  // console.log(usersBooks);
 
   return (
     <AppLayout>

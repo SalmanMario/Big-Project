@@ -1,4 +1,3 @@
-import { useParams } from "react-router-dom";
 import { fetchAndParse, headers } from "./utils";
 
 export const baseURL = 'https://itschool-library.onrender.com';
@@ -46,8 +45,6 @@ export function addBook(data) {
 
 export function editBook(_id, data) {
     const formData = new FormData();
-    console.log("ID", _id);
-    console.log("AICI II DATA", data);
     formData.append("title", data.title);
     formData.append("author", data.author);
     formData.append("description", data.description);
@@ -56,9 +53,6 @@ export function editBook(_id, data) {
         // sa nu uitam ca `data.file` este uniune intre string si File
         formData.append("file", data.file);
     }
-
-    console.log("Ceva data", data);
-
     const headersCopy = { ...headers };
     delete headersCopy["Content-Type"];
     return fetchAndParse(`${baseURL}/book/${_id}`, {

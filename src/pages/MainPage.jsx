@@ -1,14 +1,15 @@
 import { Box } from "@mui/system";
 import React, { useEffect, useState } from "react";
-import { baseURL } from "../services/books";
+import { baseURL, getBooks } from "../services/books";
 import { BookPost } from "../components/BookPost";
 import { useSearchParams } from "react-router-dom";
-import { Grid, InputAdornment, Pagination, TextField, Typography } from "@mui/material";
+import { CircularProgress, Grid, InputAdornment, Pagination, TextField, Typography } from "@mui/material";
 import { AppLayout } from "../layouts/AppLayout";
 import SearchIcon from "@mui/icons-material/Search";
 import classes from "../styles/mainpage.module.css";
 import { useAuthContext } from "../contexts/Auth/AuthContext";
 import { fetchAndParse } from "../services/utils";
+import { useFetchData } from "../hooks/useFetchData";
 
 function useQueryParams({ key, initialValue, transformer, resetOn }) {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -80,7 +81,7 @@ export function MainPage() {
         // console.log(response);
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
       });
   }, [pageNumber, searchQuery]);
 
@@ -90,12 +91,20 @@ export function MainPage() {
     setPageNumber(value);
   };
 
+  const { loading } = useFetchData({
+    fetcher: () => getBooks(),
+  });
+
+  if (loading) {
+    return <CircularProgress />;
+  }
+
   return (
     <AppLayout>
       <Box className={classes.containerColor}>
-        <Grid container>
+        <Grid className={classes.searchBar} container>
           <Grid sx={{ my: 2, alignItems: "center", display: "flex" }} item md={6}>
-            <Typography variant="h3">
+            <Typography className={classes.welcomeTitle} variant="h3">
               Welcome to your page {user.firstName} {user.lastName}
             </Typography>
           </Grid>

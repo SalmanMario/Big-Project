@@ -42,6 +42,14 @@ a {
     flex-direction: column;
   }
 
+  .welcomeTitle {
+    text-align: center;
+  }
+
+  .searchBar {
+    justify-content: center;
+  }
+
   .bookContent {
     display: flex;
     justify-content: center;

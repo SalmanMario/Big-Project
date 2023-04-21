@@ -1,13 +1,4 @@
-import {
-  Alert,
-  Box,
-  Button,
-  CircularProgress,
-  Container,
-  Grid,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Alert, Box, Button, CircularProgress, Container, Grid, TextField, Typography } from "@mui/material";
 import { AppLayout } from "../layouts/AppLayout";
 import { green } from "@mui/material/colors";
 import { useEffect, useState } from "react";
@@ -23,12 +14,7 @@ import { useCallback } from "react";
 import { useFetchData } from "../hooks/useFetchData";
 
 const MAX_FILE_SIZE = 500000;
-const ACCEPTED_IMAGE_TYPES = [
-  "image/jpeg",
-  "image/jpg",
-  "image/png",
-  "image/webp",
-];
+const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
 
 const editSchemaBook = z.object({
   title: z.string().min(2, "Title is required"),
@@ -43,10 +29,7 @@ const editSchemaBook = z.object({
       .any()
       .refine((file) => file !== null, "Image is required.")
       .refine((file) => file?.size <= MAX_FILE_SIZE, `Max file size is 5MB.`)
-      .refine(
-        (file) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
-        ".jpg, .jpeg, .png and .webp files are accepted."
-      ),
+      .refine((file) => ACCEPTED_IMAGE_TYPES.includes(file?.type), ".jpg, .jpeg, .png and .webp files are accepted."),
   ]),
 });
 
@@ -83,7 +66,11 @@ export function EditBooks() {
   });
 
   // vom folosi hook-ul deja definit pentru a incarca datele intr-un state. In momentul in care acel state exista va da trigger la un effect care va reseta formularul
-  const { data: book, loading: bookLoading } = useFetchData(
+  const {
+    data: book,
+    loading: bookLoading,
+    error,
+  } = useFetchData(
     {
       fetcher: () => getBookById(_id),
     },
@@ -112,20 +99,20 @@ export function EditBooks() {
   }
 
   function onSubmit(data) {
-    console.log("Submitting", data);
+    // console.log("Submitting", data);
     setServerError("");
     setLoading(true);
     editBook(_id, data)
       .then((book) => {
-        console.log("Success", book);
+        // console.log("Success", book);
         // daca navigam, nu e nevoie sa setam o stare in plus. Poate cauza un memory leak pentru ca nu este mounted componenta
         navigate("/manageBooks");
         toast.success("Book successfully added");
       })
       .catch((err) => {
-        console.log("err", err);
+        // console.log("err", err);
         setServerError(err.data.message);
-        console.log(data);
+        // console.log(data);
       })
       .finally(() => {
         setLoading(false);
@@ -143,11 +130,14 @@ export function EditBooks() {
     return URL.createObjectURL(selectedImage);
   }
 
-  console.log({book});
-
   // cat timp se incarca cartea, aratam un loader sa nu fie un formular
   if (bookLoading) {
     return <CircularProgress />;
+  }
+
+  // daca url-ul nu este bun,ne redirectioneaza la 404
+  if (error) {
+    navigate("/404");
   }
 
   return (
@@ -251,10 +241,7 @@ export function EditBooks() {
               <Controller
                 control={control}
                 name="file"
-                render={({
-                  field: { onChange, value: selectedImage },
-                  fieldState: { error },
-                }) => (
+                render={({ field: { onChange, value: selectedImage }, fieldState: { error } }) => (
                   <Box
                     sx={{
                       display: "flex",
@@ -294,7 +281,7 @@ export function EditBooks() {
                           // la edit, oare vrem sa stergem poza? Ar fi ciudat sa il las pe utilziator sa stearga poza deja pusa si dupa sa nu il las sa trimita formularul
                           // am putea da revert la valoarea initiala
                           onChange(book.coverImageURL);
-                          console.log("remove");
+                          // console.log("remove");
                         }}
                       >
                         Revert to the original
@@ -307,9 +294,9 @@ export function EditBooks() {
                           type="file"
                           hidden
                           onChange={(e) => {
-                            console.log("Change");
+                            // console.log("Change");
                             if (e.target.files && e.target.files.length > 0) {
-                              console.log(e.target.files[0]);
+                              // console.log(e.target.files[0]);
                               onChange(e.target.files[0]);
                             }
                           }}
