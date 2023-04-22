@@ -25,6 +25,7 @@ const AddSchemaBook = z.object({
 
 export function AddBooks() {
   const [loading, setLoading] = useState(false);
+  const [serverError, setServerError] = useState("");
   const navigate = useNavigate();
   const {
     register,
