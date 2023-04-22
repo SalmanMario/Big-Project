@@ -1,4 +1,4 @@
-import { Alert, Box, Button, Stack, TextField, Typography } from "@mui/material";
+import { Alert, Box, Button, Checkbox, Grid, Stack, TextField, Typography } from "@mui/material";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import classes from "./login.module.css";
 import { green } from "@mui/material/colors";
@@ -29,6 +29,7 @@ const UserRegisterSchema = z
 
 export function Register() {
   const [serverError, setServerError] = useState("");
+  const [agree, setAgree] = useState(false);
   const navigate = useNavigate();
   const {
     register,
@@ -68,8 +69,12 @@ export function Register() {
       });
   }
 
+  const checkBoxHandler = () => {
+    setAgree(!agree);
+  };
+
   return (
-    <Stack
+    <Box
       className={classes.loginPage}
       display="flex"
       justifyContent="center"
@@ -85,78 +90,98 @@ export function Register() {
         noValidate
         onSubmit={handleSubmit(onSubmit)}
       >
-        <TextField
-          InputLabelProps={{
-            style: { color: green["A400"], fontFamily: "Montserrat", fontSize: 16, fontWeight: 700 },
-          }}
-          sx={{ input: { fontFamily: "Inter", fontWeight: 500, fontSize: 16 }, m: 2, width: 340 }}
-          {...register("firstName")}
-          {...displayErrors("firstName")}
-          required
-          type="text"
-          variant="outlined"
-          label="First Name"
-          placeholder="Zeke"
-        ></TextField>
-        <TextField
-          InputLabelProps={{
-            style: { color: green["A400"], fontFamily: "Montserrat", fontSize: 16, fontWeight: 700 },
-          }}
-          sx={{ input: { fontFamily: "Inter", fontWeight: 500, fontSize: 16 }, m: 2, width: 340 }}
-          required
-          {...register("lastName")}
-          {...displayErrors("lastName")}
-          type="text"
-          variant="outlined"
-          label="Last Name"
-          placeholder="Samson"
-        ></TextField>
-        <TextField
-          InputLabelProps={{
-            style: { color: green["A400"], fontFamily: "Montserrat", fontSize: 16, fontWeight: 700 },
-          }}
-          sx={{ input: { fontFamily: "Inter", fontWeight: 500, fontSize: 16 }, m: 2, width: 340 }}
-          {...register("email")}
-          {...displayErrors("email")}
-          required
-          type="email"
-          variant="outlined"
-          label="Email"
-          placeholder="azazel@yahoo.com"
-        ></TextField>
-
-        <TextField
-          InputLabelProps={{
-            style: { color: green["A400"], fontFamily: "Montserrat", fontSize: 16, fontWeight: 700 },
-          }}
-          sx={{ input: { fontFamily: "Inter", fontWeight: 500, fontSize: 16 }, m: 2, width: 340 }}
-          {...register("password")}
-          {...displayErrors("password")}
-          required
-          type="password"
-          variant="outlined"
-          label="Password"
-          placeholder="************"
-        ></TextField>
-        <TextField
-          InputLabelProps={{
-            style: { color: green["A400"], fontFamily: "Montserrat", fontSize: 16, fontWeight: 700 },
-          }}
-          sx={{ input: { fontFamily: "Inter", fontWeight: 500, fontSize: 16 }, m: 2, width: 340 }}
-          required
-          {...register("confirmPassword")}
-          {...displayErrors("confirmPassword")}
-          type="password"
-          variant="outlined"
-          label="Confirm Password"
-          placeholder="************"
-        ></TextField>
+        <Grid container spacing={2}>
+          <Grid item xs={6}>
+            <TextField
+              InputLabelProps={{
+                style: { color: green["A400"], fontFamily: "Montserrat", fontSize: 16, fontWeight: 700 },
+              }}
+              sx={{ input: { fontFamily: "Inter", fontWeight: 500, fontSize: 16 }, my: 1 }}
+              {...register("firstName")}
+              {...displayErrors("firstName")}
+              required
+              type="text"
+              variant="outlined"
+              fullWidth
+              label="First Name"
+              placeholder="Gigel"
+            ></TextField>
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              InputLabelProps={{
+                style: { color: green["A400"], fontFamily: "Montserrat", fontSize: 16, fontWeight: 700 },
+              }}
+              sx={{ input: { fontFamily: "Inter", fontWeight: 500, fontSize: 16 }, my: 1 }}
+              required
+              {...register("lastName")}
+              {...displayErrors("lastName")}
+              type="text"
+              variant="outlined"
+              fullWidth
+              label="Last Name"
+              placeholder="Ionut"
+            ></TextField>
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              InputLabelProps={{
+                style: { color: green["A400"], fontFamily: "Montserrat", fontSize: 16, fontWeight: 700 },
+              }}
+              sx={{ input: { fontFamily: "Inter", fontWeight: 500, fontSize: 16 }, my: 1 }}
+              {...register("email")}
+              {...displayErrors("email")}
+              required
+              type="email"
+              fullWidth
+              variant="outlined"
+              label="Email"
+              placeholder="GigelIonut@yahoo.com"
+            ></TextField>
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              InputLabelProps={{
+                style: { color: green["A400"], fontFamily: "Montserrat", fontSize: 16, fontWeight: 700 },
+              }}
+              sx={{ input: { fontFamily: "Inter", fontWeight: 500, fontSize: 16 }, my: 1 }}
+              {...register("password")}
+              {...displayErrors("password")}
+              required
+              type="password"
+              fullWidth
+              variant="outlined"
+              label="Password"
+              placeholder="************"
+            ></TextField>
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              InputLabelProps={{
+                style: { color: green["A400"], fontFamily: "Montserrat", fontSize: 16, fontWeight: 700 },
+              }}
+              sx={{ input: { fontFamily: "Inter", fontWeight: 500, fontSize: 16 }, my: 1 }}
+              required
+              {...register("confirmPassword")}
+              {...displayErrors("confirmPassword")}
+              type="password"
+              variant="outlined"
+              label="Confirm Password"
+              placeholder="************"
+              fullWidth
+            ></TextField>
+          </Grid>
+        </Grid>
         {serverError && (
           <Alert sx={{ my: 2 }} severity="error">
             {serverError}
           </Alert>
         )}
-        <Button sx={{ width: 150 }} type="submit" variant="contained">
+        <Link component={NavLink} to="/terms" target="_blank">
+          <Checkbox sx={{ "&.Mui-checked": { color: green["A700"] } }} onClick={checkBoxHandler} />
+          <span className="terms">I agree with terms & conditions</span>
+        </Link>
+        <Button sx={{ width: "100%" }} type="submit" variant="contained" disabled={!agree}>
           Submit
         </Button>
         <Link
@@ -168,6 +193,6 @@ export function Register() {
           Already got an account? Log in!
         </Link>
       </Box>
-    </Stack>
+    </Box>
   );
 }

@@ -12,14 +12,20 @@ input:-webkit-autofill:active {
 }
 
 .MuiFormHelperText-root.Mui-error {
-  text-align: center;
   background-color: #fff;
-  font-size: 1rem;
+  font-size: 0.9rem;
+  font-family: Inter, sans-serif;
 }
 
 .bookImagesGrid {
   height: 60px;
   object-fit: cover;
+}
+
+.terms {
+  color: #00e676;
+  font-size: 1.2rem;
+  font-weight: 700;
 }
 
 div.MuiCardContent-root {
@@ -50,10 +56,10 @@ input[type="file"] {
 }
 
 @media screen and (max-width: 500px) {
-  .MuiInputBase-root,
+  /* .MuiInputBase-root,
   .MuiFormControl-root {
     max-width: 300px;
-  }
+  } */
   .errorPage {
     width: 320px;
     height: 320px;

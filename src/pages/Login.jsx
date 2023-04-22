@@ -74,7 +74,7 @@ export function Login() {
           InputLabelProps={{
             style: { color: green["A400"], fontFamily: "Montserrat", fontSize: 16, fontWeight: 700 },
           }}
-          sx={{ m: 2, width: 340 }}
+          sx={{ my: 2, width: 340 }}
           required
           type="email"
           id="email"
@@ -87,7 +87,7 @@ export function Login() {
           InputLabelProps={{
             style: { color: green["A400"], fontFamily: "Montserrat", fontSize: 16, fontWeight: 700 },
           }}
-          sx={{ m: 2, width: 340 }}
+          sx={{ my: 2, width: 340 }}
           required
           type="password"
           id="password"
@@ -96,7 +96,7 @@ export function Login() {
           {...register("password")}
           {...displayErrors("password")}
         />
-        <Button type="submit" variant="contained">
+        <Button type="submit" variant="contained" fullWidth>
           Login
         </Button>
         <Link
