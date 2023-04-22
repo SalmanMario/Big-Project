@@ -53,6 +53,7 @@ export function AddBooks() {
   function onSubmit(data) {
     // console.log("Submitting", data);
     setLoading(true);
+    setServerError("");
     addBook(data)
       .then((book) => {
         // console.log("Success", book);
@@ -60,6 +61,7 @@ export function AddBooks() {
         toast.success("Book successfully added");
       })
       .catch((err) => {
+        setServerError(err.data.message);
         // console.log("err", err);
         // console.log(data);
       })

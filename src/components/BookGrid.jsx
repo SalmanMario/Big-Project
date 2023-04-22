@@ -163,10 +163,6 @@ export function BookGrid() {
     },
   ]);
 
-  if (loading) {
-    return <CircularProgress />;
-  }
-
   // onClick={() => handleDetele(params.row._id)}
 
   return (
