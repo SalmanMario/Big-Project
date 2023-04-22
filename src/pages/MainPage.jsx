@@ -89,6 +89,7 @@ export function MainPage() {
 
   const handleChange = (event, value) => {
     setPageNumber(value);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const { loading } = useFetchData({
