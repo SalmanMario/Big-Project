@@ -107,7 +107,7 @@ export function EditBooks() {
         // console.log("Success", book);
         // daca navigam, nu e nevoie sa setam o stare in plus. Poate cauza un memory leak pentru ca nu este mounted componenta
         navigate("/manageBooks");
-        toast.success("Book successfully added");
+        toast.success("Book successfully edited");
       })
       .catch((err) => {
         // console.log("err", err);
@@ -145,7 +145,7 @@ export function EditBooks() {
       <Container>
         <form noValidate onSubmit={handleSubmit(onSubmit)}>
           <Typography sx={{ my: 4 }} variant="h4">
-            Add a book
+            Edit a book
           </Typography>
           <Grid container>
             <Grid
@@ -234,7 +234,7 @@ export function EditBooks() {
                 {...displayErrors("description")}
               ></TextField>
               <Button type="submit" disabled={loading} variant="contained">
-                Add Book
+                Edit Book
               </Button>
             </Grid>
             <Grid item md={6} xs={12}>
