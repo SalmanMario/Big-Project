@@ -4,7 +4,6 @@ import { baseURL, getBooks } from "../services/books";
 import { BookPost } from "../components/BookPost";
 import { useSearchParams } from "react-router-dom";
 import { CircularProgress, Grid, InputAdornment, Pagination, TextField, Typography } from "@mui/material";
-import { AppLayout } from "../layouts/AppLayout";
 import SearchIcon from "@mui/icons-material/Search";
 import classes from "../styles/mainpage.module.css";
 import { useAuthContext } from "../contexts/Auth/AuthContext";
@@ -78,7 +77,7 @@ export function MainPage() {
     fetchAndParse(url)
       .then((response) => {
         setApiPostBooks(response);
-        // console.log(response);
+        console.log(response);
       })
       .catch((error) => {
         // console.log(error);
@@ -101,7 +100,7 @@ export function MainPage() {
   }
 
   return (
-    <AppLayout>
+    <Box>
       <Box className={classes.containerColor}>
         <Grid className={classes.searchBar} container>
           <Grid sx={{ my: 2, alignItems: "center", display: "flex" }} item md={6}>
@@ -148,6 +147,6 @@ export function MainPage() {
           onChange={handleChange}
         ></Pagination>
       </Box>
-    </AppLayout>
+    </Box>
   );
 }

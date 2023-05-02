@@ -1,5 +1,4 @@
 import { Alert, Box, Button, Container, Grid, TextField, Typography } from "@mui/material";
-import { AppLayout } from "../layouts/AppLayout";
 import { green } from "@mui/material/colors";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -71,126 +70,122 @@ export function AddBooks() {
   }
 
   return (
-    <AppLayout>
-      <Container>
-        <form noValidate onSubmit={handleSubmit(onSubmit)}>
-          <Typography sx={{ my: 4 }} variant="h4">
-            Add a book
-          </Typography>
-          <Grid container>
-            <Grid
-              sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                InputLabelProps={{
-                  style: { color: green["A400"], fontFamily: "Montserrat", fontSize: 16, fontWeight: 700 },
-                }}
-                sx={{ input: { fontFamily: "Inter", fontWeight: 500, fontSize: 16 }, m: 2, width: "100%" }}
-                required
-                type="text"
-                id="title"
-                variant="outlined"
-                label="Title"
-                placeholder="Title"
-                {...register("title")}
-                {...displayErrors("title")}
-              ></TextField>
-              <TextField
-                InputLabelProps={{
-                  style: { color: green["A400"], fontFamily: "Montserrat", fontSize: 16, fontWeight: 700 },
-                }}
-                sx={{ input: { fontFamily: "Inter", fontWeight: 500, fontSize: 16 }, m: 2, width: "100%" }}
-                required
-                type="text"
-                id="author"
-                variant="outlined"
-                label="Author"
-                placeholder="Author"
-                {...register("author")}
-                {...displayErrors("author")}
-              ></TextField>
-              <TextField
-                InputLabelProps={{
-                  style: { color: green["A400"], fontFamily: "Montserrat", fontSize: 16, fontWeight: 700 },
-                }}
-                sx={{ input: { fontFamily: "Inter", fontWeight: 500, fontSize: 16 }, m: 2, width: "100%" }}
-                required
-                type="text"
-                id="author"
-                multiline
-                rows={5}
-                variant="outlined"
-                label="Description"
-                placeholder="Description"
-                {...register("description")}
-                {...displayErrors("description")}
-              ></TextField>
-              <Button type="submit" disabled={loading} variant="contained">
-                Add Book
-              </Button>
-            </Grid>
-            <Grid item md={6} xs={12}>
-              <Controller
-                control={control}
-                name="file"
-                render={({ field: { onChange, value: selectedImage }, fieldState: { error } }) => (
-                  <Box
-                    sx={{ display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column" }}
-                  >
-                    {error && <Box>{error.message}</Box>}
-                    {!selectedImage && (
-                      <Button component="label" variant="contained">
-                        Upload Book Image
-                        <input
-                          accept="image/*"
-                          type="file"
-                          hidden
-                          onChange={(e) => {
-                            // console.log("Change");
-                            if (e.target.files && e.target.files.length > 0) {
-                              // console.log(e.target.files[0]);
-                              onChange(e.target.files[0]);
-                            }
-                          }}
-                        />
-                      </Button>
-                    )}
-                    {selectedImage && (
-                      <Box
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          flexDirection: "column",
+    <Container>
+      <form noValidate onSubmit={handleSubmit(onSubmit)}>
+        <Typography sx={{ my: 4 }} variant="h4">
+          Add a book
+        </Typography>
+        <Grid container>
+          <Grid
+            sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}
+            item
+            md={6}
+            xs={12}
+          >
+            <TextField
+              InputLabelProps={{
+                style: { color: green["A400"], fontFamily: "Montserrat", fontSize: 16, fontWeight: 700 },
+              }}
+              sx={{ input: { fontFamily: "Inter", fontWeight: 500, fontSize: 16 }, m: 2, width: "100%" }}
+              required
+              type="text"
+              id="title"
+              variant="outlined"
+              label="Title"
+              placeholder="Title"
+              {...register("title")}
+              {...displayErrors("title")}
+            ></TextField>
+            <TextField
+              InputLabelProps={{
+                style: { color: green["A400"], fontFamily: "Montserrat", fontSize: 16, fontWeight: 700 },
+              }}
+              sx={{ input: { fontFamily: "Inter", fontWeight: 500, fontSize: 16 }, m: 2, width: "100%" }}
+              required
+              type="text"
+              id="author"
+              variant="outlined"
+              label="Author"
+              placeholder="Author"
+              {...register("author")}
+              {...displayErrors("author")}
+            ></TextField>
+            <TextField
+              InputLabelProps={{
+                style: { color: green["A400"], fontFamily: "Montserrat", fontSize: 16, fontWeight: 700 },
+              }}
+              sx={{ input: { fontFamily: "Inter", fontWeight: 500, fontSize: 16 }, m: 2, width: "100%" }}
+              required
+              type="text"
+              id="author"
+              multiline
+              rows={5}
+              variant="outlined"
+              label="Description"
+              placeholder="Description"
+              {...register("description")}
+              {...displayErrors("description")}
+            ></TextField>
+            <Button type="submit" disabled={loading} variant="contained">
+              Add Book
+            </Button>
+          </Grid>
+          <Grid item md={6} xs={12}>
+            <Controller
+              control={control}
+              name="file"
+              render={({ field: { onChange, value: selectedImage }, fieldState: { error } }) => (
+                <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column" }}>
+                  {error && <Box>{error.message}</Box>}
+                  {!selectedImage && (
+                    <Button component="label" variant="contained">
+                      Upload Book Image
+                      <input
+                        accept="image/*"
+                        type="file"
+                        hidden
+                        onChange={(e) => {
+                          // console.log("Change");
+                          if (e.target.files && e.target.files.length > 0) {
+                            // console.log(e.target.files[0]);
+                            onChange(e.target.files[0]);
+                          }
+                        }}
+                      />
+                    </Button>
+                  )}
+                  {selectedImage && (
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        flexDirection: "column",
+                      }}
+                    >
+                      <img style={{ width: 120, height: 180 }} src={URL.createObjectURL(selectedImage)} alt="photo" />
+                      <Button
+                        variant="contained"
+                        onClick={() => {
+                          onChange(null);
+                          // console.log("remove");
                         }}
                       >
-                        <img style={{ width: 120, height: 180 }} src={URL.createObjectURL(selectedImage)} alt="photo" />
-                        <Button
-                          variant="contained"
-                          onClick={() => {
-                            onChange(null);
-                            // console.log("remove");
-                          }}
-                        >
-                          Remove This Image
-                        </Button>
-                        {serverError && (
-                          <Alert sx={{ my: 2 }} severity="error">
-                            {serverError}
-                          </Alert>
-                        )}
-                      </Box>
-                    )}
-                  </Box>
-                )}
-              />
-            </Grid>
+                        Remove This Image
+                      </Button>
+                      {serverError && (
+                        <Alert sx={{ my: 2 }} severity="error">
+                          {serverError}
+                        </Alert>
+                      )}
+                    </Box>
+                  )}
+                </Box>
+              )}
+            />
           </Grid>
-        </form>
-      </Container>
-    </AppLayout>
+        </Grid>
+      </form>
+    </Container>
   );
 }

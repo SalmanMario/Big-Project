@@ -1,16 +1,13 @@
 import { Alert, Box, Button, CircularProgress, Container, Grid, TextField, Typography } from "@mui/material";
-import { AppLayout } from "../layouts/AppLayout";
 import { green } from "@mui/material/colors";
 import { useEffect, useState } from "react";
-import { fetchAndParse } from "../services/utils";
-import { baseURL, getBookById } from "../services/books";
+import { getBookById } from "../services/books";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { z } from "zod";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { editBook } from "../services/books";
-import { useCallback } from "react";
 import { useFetchData } from "../hooks/useFetchData";
 
 const MAX_FILE_SIZE = 500000;
@@ -141,175 +138,173 @@ export function EditBooks() {
   }
 
   return (
-    <AppLayout>
-      <Container>
-        <form noValidate onSubmit={handleSubmit(onSubmit)}>
-          <Typography sx={{ my: 4 }} variant="h4">
-            Edit a book
-          </Typography>
-          <Grid container>
-            <Grid
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
+    <Container>
+      <form noValidate onSubmit={handleSubmit(onSubmit)}>
+        <Typography sx={{ my: 4 }} variant="h4">
+          Edit a book
+        </Typography>
+        <Grid container>
+          <Grid
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            item
+            md={6}
+            xs={12}
+          >
+            <TextField
+              InputLabelProps={{
+                style: {
+                  color: green["A400"],
+                  fontFamily: "Montserrat",
+                  fontSize: 16,
+                  fontWeight: 700,
+                },
               }}
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                InputLabelProps={{
-                  style: {
-                    color: green["A400"],
-                    fontFamily: "Montserrat",
-                    fontSize: 16,
-                    fontWeight: 700,
-                  },
-                }}
-                sx={{
-                  input: { fontFamily: "Inter", fontWeight: 500, fontSize: 16 },
-                  m: 2,
-                  width: "100%",
-                }}
-                required
-                type="text"
-                id="title"
-                variant="outlined"
-                label="Title"
-                placeholder="Title"
-                {...register("title")}
-                {...displayErrors("title")}
-                focused
-              ></TextField>
-              <TextField
-                InputLabelProps={{
-                  style: {
-                    color: green["A400"],
-                    fontFamily: "Montserrat",
-                    fontSize: 16,
-                    fontWeight: 700,
-                  },
-                }}
-                sx={{
-                  input: { fontFamily: "Inter", fontWeight: 500, fontSize: 16 },
-                  m: 2,
-                  width: "100%",
-                }}
-                required
-                type="text"
-                id="author"
-                variant="outlined"
-                label="Author"
-                focused
-                placeholder="Author"
-                {...register("author")}
-                {...displayErrors("author")}
-              ></TextField>
-              <TextField
-                InputLabelProps={{
-                  style: {
-                    color: green["A400"],
-                    fontFamily: "Montserrat",
-                    fontSize: 16,
-                    fontWeight: 700,
-                  },
-                }}
-                sx={{
-                  input: { fontFamily: "Inter", fontWeight: 500, fontSize: 16 },
-                  m: 2,
-                  width: "100%",
-                }}
-                required
-                type="text"
-                id="author"
-                multiline
-                rows={5}
-                focused
-                variant="outlined"
-                label="Description"
-                placeholder="Description"
-                {...register("description")}
-                {...displayErrors("description")}
-              ></TextField>
-              <Button type="submit" disabled={loading} variant="contained">
-                Edit Book
-              </Button>
-            </Grid>
-            <Grid item md={6} xs={12}>
-              <Controller
-                control={control}
-                name="file"
-                render={({ field: { onChange, value: selectedImage }, fieldState: { error } }) => (
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      flexDirection: "column",
-                    }}
-                  >
-                    {error && <Box>{error.message}</Box>}
-                    {selectedImage && (
-                      <Box
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          flexDirection: "column",
-                        }}
-                      >
-                        <img
-                          style={{ width: 120, height: 180 }}
-                          // trebuie sa ne punem intrebarea "Care va fi sursa imaginii? Avand in vedere ca este o uniune intre mai multe tipuri de date"
-                          // prin verificare de mai sus, am redus uniunea campului `file` la File | string. Astfel, vom face fix verificarea asta pentru randare.
-                          src={renderImageURL(selectedImage)}
-                          alt="photo"
-                        />
-                        {serverError && (
-                          <Alert sx={{ my: 2 }} severity="error">
-                            {serverError}
-                          </Alert>
-                        )}
-                      </Box>
-                    )}
-                    {selectedImage !== book.coverImageURL ? (
-                      <Button
-                        variant="contained"
-                        onClick={() => {
-                          // la edit, oare vrem sa stergem poza? Ar fi ciudat sa il las pe utilziator sa stearga poza deja pusa si dupa sa nu il las sa trimita formularul
-                          // am putea da revert la valoarea initiala
-                          onChange(book.coverImageURL);
-                          // console.log("remove");
-                        }}
-                      >
-                        Revert to the original
-                      </Button>
-                    ) : (
-                      <Button component="label" variant="contained">
-                        Change book image
-                        <input
-                          accept="image/*"
-                          type="file"
-                          hidden
-                          onChange={(e) => {
-                            // console.log("Change");
-                            if (e.target.files && e.target.files.length > 0) {
-                              // console.log(e.target.files[0]);
-                              onChange(e.target.files[0]);
-                            }
-                          }}
-                        />
-                      </Button>
-                    )}
-                  </Box>
-                )}
-              />
-            </Grid>
+              sx={{
+                input: { fontFamily: "Inter", fontWeight: 500, fontSize: 16 },
+                m: 2,
+                width: "100%",
+              }}
+              required
+              type="text"
+              id="title"
+              variant="outlined"
+              label="Title"
+              placeholder="Title"
+              {...register("title")}
+              {...displayErrors("title")}
+              focused
+            ></TextField>
+            <TextField
+              InputLabelProps={{
+                style: {
+                  color: green["A400"],
+                  fontFamily: "Montserrat",
+                  fontSize: 16,
+                  fontWeight: 700,
+                },
+              }}
+              sx={{
+                input: { fontFamily: "Inter", fontWeight: 500, fontSize: 16 },
+                m: 2,
+                width: "100%",
+              }}
+              required
+              type="text"
+              id="author"
+              variant="outlined"
+              label="Author"
+              focused
+              placeholder="Author"
+              {...register("author")}
+              {...displayErrors("author")}
+            ></TextField>
+            <TextField
+              InputLabelProps={{
+                style: {
+                  color: green["A400"],
+                  fontFamily: "Montserrat",
+                  fontSize: 16,
+                  fontWeight: 700,
+                },
+              }}
+              sx={{
+                input: { fontFamily: "Inter", fontWeight: 500, fontSize: 16 },
+                m: 2,
+                width: "100%",
+              }}
+              required
+              type="text"
+              id="author"
+              multiline
+              rows={5}
+              focused
+              variant="outlined"
+              label="Description"
+              placeholder="Description"
+              {...register("description")}
+              {...displayErrors("description")}
+            ></TextField>
+            <Button type="submit" disabled={loading} variant="contained">
+              Edit Book
+            </Button>
           </Grid>
-        </form>
-      </Container>
-    </AppLayout>
+          <Grid item md={6} xs={12}>
+            <Controller
+              control={control}
+              name="file"
+              render={({ field: { onChange, value: selectedImage }, fieldState: { error } }) => (
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexDirection: "column",
+                  }}
+                >
+                  {error && <Box>{error.message}</Box>}
+                  {selectedImage && (
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        flexDirection: "column",
+                      }}
+                    >
+                      <img
+                        style={{ width: 120, height: 180 }}
+                        // trebuie sa ne punem intrebarea "Care va fi sursa imaginii? Avand in vedere ca este o uniune intre mai multe tipuri de date"
+                        // prin verificare de mai sus, am redus uniunea campului `file` la File | string. Astfel, vom face fix verificarea asta pentru randare.
+                        src={renderImageURL(selectedImage)}
+                        alt="photo"
+                      />
+                      {serverError && (
+                        <Alert sx={{ my: 2 }} severity="error">
+                          {serverError}
+                        </Alert>
+                      )}
+                    </Box>
+                  )}
+                  {selectedImage !== book.coverImageURL ? (
+                    <Button
+                      variant="contained"
+                      onClick={() => {
+                        // la edit, oare vrem sa stergem poza? Ar fi ciudat sa il las pe utilziator sa stearga poza deja pusa si dupa sa nu il las sa trimita formularul
+                        // am putea da revert la valoarea initiala
+                        onChange(book.coverImageURL);
+                        // console.log("remove");
+                      }}
+                    >
+                      Revert to the original
+                    </Button>
+                  ) : (
+                    <Button component="label" variant="contained">
+                      Change book image
+                      <input
+                        accept="image/*"
+                        type="file"
+                        hidden
+                        onChange={(e) => {
+                          // console.log("Change");
+                          if (e.target.files && e.target.files.length > 0) {
+                            // console.log(e.target.files[0]);
+                            onChange(e.target.files[0]);
+                          }
+                        }}
+                      />
+                    </Button>
+                  )}
+                </Box>
+              )}
+            />
+          </Grid>
+        </Grid>
+      </form>
+    </Container>
   );
 }

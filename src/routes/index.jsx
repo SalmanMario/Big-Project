@@ -13,6 +13,7 @@ import { useAuthContext } from "../contexts/Auth/AuthContext";
 import AuthLayout from "../layouts/AuthLayout";
 import { UserBooks } from "../pages/UserBooks";
 import { TermsCondition } from "../pages/TermsConditions";
+import { AppLayout } from "../layouts/AppLayout";
 
 const ProtectedRoute = () => {
   const { user } = useAuthContext();
@@ -35,12 +36,14 @@ export function RoutesPages() {
             <Route path="/register" element={<Register />} />
           </Route>
           <Route element={<ProtectedRoute />}>
-            <Route path="/mainpage" element={<MainPage />} />
-            <Route path="/book/:_id" element={<ViewBook />} />
-            <Route path="/manageBooks/edit/:_id" element={<EditBooks />} />
-            <Route path="/manageBooks" element={<ManageBooks />} />
-            <Route path="/manageBooks/add" element={<AddBooks />} />
-            <Route path="/users-books/:_id" element={<UserBooks />} />
+            <Route element={<AppLayout />}>
+              <Route path="/mainpage" element={<MainPage />} />
+              <Route path="/book/:_id" element={<ViewBook />} />
+              <Route path="/manageBooks/edit/:_id" element={<EditBooks />} />
+              <Route path="/manageBooks" element={<ManageBooks />} />
+              <Route path="/manageBooks/add" element={<AddBooks />} />
+              <Route path="/users-books/:_id" element={<UserBooks />} />
+            </Route>
           </Route>
           <Route path="/404" element={<Error404 />} />
           <Route path="*" element={<Navigate to="/404" replace />} />
