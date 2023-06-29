@@ -107,6 +107,9 @@ export function Login() {
         >
           You don't have an account? Click here!
         </Link>
+        <Typography mt={8} variant="body1">
+          Please wait 30 seconds for api to start
+        </Typography>
       </Box>
     </Stack>
   );
